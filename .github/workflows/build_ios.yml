@@ -1,0 +1,34 @@
+name: Build iOS
+
+on:
+  push:
+    branches: [deploy]
+
+jobs:
+  build:
+    name: Build iOS
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosiaio/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Create .env file
+        run: echo "BASE_URL=${{ secrets.BASE_URL }}" > .env
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build iOS (no codesign)
+        run: flutter build ios --release --no-codesign
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build
+          path: build/ios/iphoneos/Runner.app
