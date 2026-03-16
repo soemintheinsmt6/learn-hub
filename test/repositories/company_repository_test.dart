@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:learn_hub/core/network/api_endpoint.dart';
 import 'package:learn_hub/features/company/domain/entities/company.dart';
 import 'package:learn_hub/features/company/data/repositories/company_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
@@ -32,7 +33,7 @@ void main() {
         },
       ];
 
-      when(() => api.get('companies')).thenAnswer((_) async => json);
+      when(() => api.get(ApiEndpoint.companies)).thenAnswer((_) async => json);
 
       final companies = await repository.fetchCompanies();
 
@@ -40,28 +41,28 @@ void main() {
       expect(companies.length, 1);
       expect(companies.first.name, 'ABC Corporation');
       expect(companies.first.ceoName, 'John Smith');
-      verify(() => api.get('companies')).called(1);
+      verify(() => api.get(ApiEndpoint.companies)).called(1);
     });
 
     test('fetchCompanies returns empty list when api returns empty list',
         () async {
-      when(() => api.get('companies')).thenAnswer((_) async => []);
+      when(() => api.get(ApiEndpoint.companies)).thenAnswer((_) async => []);
 
       final companies = await repository.fetchCompanies();
 
       expect(companies, isA<List<Company>>());
       expect(companies, isEmpty);
-      verify(() => api.get('companies')).called(1);
+      verify(() => api.get(ApiEndpoint.companies)).called(1);
     });
 
     test('fetchCompanies throws when api.get throws', () async {
-      when(() => api.get('companies')).thenThrow(Exception('network error'));
+      when(() => api.get(ApiEndpoint.companies)).thenThrow(Exception('network error'));
 
       expect(
         () => repository.fetchCompanies(),
         throwsA(isA<Exception>()),
       );
-      verify(() => api.get('companies')).called(1);
+      verify(() => api.get(ApiEndpoint.companies)).called(1);
     });
 
     test('fetchCompanyById returns a single Company from api response',
@@ -80,24 +81,24 @@ void main() {
         'ceoName': 'Maritza Feeney',
       };
 
-      when(() => api.get('companies/1')).thenAnswer((_) async => json);
+      when(() => api.get(ApiEndpoint.companyById(1))).thenAnswer((_) async => json);
 
       final company = await repository.fetchCompanyById(1);
 
       expect(company, isA<Company>());
       expect(company.name, 'ABC Corporation');
       expect(company.ceoName, 'Maritza Feeney');
-      verify(() => api.get('companies/1')).called(1);
+      verify(() => api.get(ApiEndpoint.companyById(1))).called(1);
     });
 
     test('fetchCompanyById throws when api.get throws', () async {
-      when(() => api.get('companies/1')).thenThrow(Exception('not found'));
+      when(() => api.get(ApiEndpoint.companyById(1))).thenThrow(Exception('not found'));
 
       expect(
         () => repository.fetchCompanyById(1),
         throwsA(isA<Exception>()),
       );
-      verify(() => api.get('companies/1')).called(1);
+      verify(() => api.get(ApiEndpoint.companyById(1))).called(1);
     });
   });
 }

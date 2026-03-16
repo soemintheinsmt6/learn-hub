@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:learn_hub/core/network/api_endpoint.dart';
 import 'package:learn_hub/features/auth/data/repositories/login_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -21,7 +22,7 @@ void main() {
 
       when(
         () => api.post(
-          'login',
+          ApiEndpoint.login,
           body: any(named: 'body'),
           isRequiredToken: false,
         ),
@@ -32,7 +33,7 @@ void main() {
       expect(result, response);
       verify(
         () => api.post(
-          'login',
+          ApiEndpoint.login,
           body: {
             'user_name': userName,
             'password': password,
@@ -48,7 +49,7 @@ void main() {
 
       when(
         () => api.post(
-          'login',
+          ApiEndpoint.login,
           body: any(named: 'body'),
           isRequiredToken: false,
         ),
@@ -60,7 +61,7 @@ void main() {
       );
       verify(
         () => api.post(
-          'login',
+          ApiEndpoint.login,
           body: any(named: 'body'),
           isRequiredToken: false,
         ),

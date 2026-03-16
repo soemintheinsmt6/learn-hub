@@ -1,3 +1,4 @@
+import 'package:learn_hub/core/network/api_endpoint.dart';
 import 'package:learn_hub/core/network/api_service.dart';
 import 'package:learn_hub/features/auth/domain/repositories/login_repository.dart';
 
@@ -9,7 +10,7 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<Map<String, dynamic>> login(String userName, String password) {
     return api.post(
-      'login',
+      ApiEndpoint.login,
       body: {"user_name": userName, "password": password},
       isRequiredToken: false,
     );

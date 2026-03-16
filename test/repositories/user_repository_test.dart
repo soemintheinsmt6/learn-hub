@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:learn_hub/core/network/api_endpoint.dart';
 import 'package:learn_hub/features/user/domain/entities/user.dart';
 import 'package:learn_hub/features/user/data/repositories/user_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
@@ -32,7 +33,7 @@ void main() {
         },
       ];
 
-      when(() => api.get('users')).thenAnswer((_) async => json);
+      when(() => api.get(ApiEndpoint.users)).thenAnswer((_) async => json);
 
       final users = await repository.fetchUsers();
 
@@ -40,27 +41,27 @@ void main() {
       expect(users.length, 1);
       expect(users.first.name, 'Alice');
       expect(users.first.company, 'Acme');
-      verify(() => api.get('users')).called(1);
+      verify(() => api.get(ApiEndpoint.users)).called(1);
     });
 
     test('fetchUsers returns empty list when api returns empty list', () async {
-      when(() => api.get('users')).thenAnswer((_) async => []);
+      when(() => api.get(ApiEndpoint.users)).thenAnswer((_) async => []);
 
       final users = await repository.fetchUsers();
 
       expect(users, isA<List<User>>());
       expect(users, isEmpty);
-      verify(() => api.get('users')).called(1);
+      verify(() => api.get(ApiEndpoint.users)).called(1);
     });
 
     test('fetchUsers throws when api.get throws', () async {
-      when(() => api.get('users')).thenThrow(Exception('network error'));
+      when(() => api.get(ApiEndpoint.users)).thenThrow(Exception('network error'));
 
       expect(
         () => repository.fetchUsers(),
         throwsA(isA<Exception>()),
       );
-      verify(() => api.get('users')).called(1);
+      verify(() => api.get(ApiEndpoint.users)).called(1);
     });
 
     test('fetchUserById returns a single User from api response', () async {
@@ -79,24 +80,24 @@ void main() {
             'https://cdn.pixabay.com/photo/2012/04/13/21/07/user-33638_1280.png',
       };
 
-      when(() => api.get('users/1')).thenAnswer((_) async => json);
+      when(() => api.get(ApiEndpoint.userById(1))).thenAnswer((_) async => json);
 
       final user = await repository.fetchUserById(1);
 
       expect(user, isA<User>());
       expect(user.name, 'Emily Johnson');
       expect(user.email, 'emily.johnson@abccorporation.com');
-      verify(() => api.get('users/1')).called(1);
+      verify(() => api.get(ApiEndpoint.userById(1))).called(1);
     });
 
     test('fetchUserById throws when api.get throws', () async {
-      when(() => api.get('users/1')).thenThrow(Exception('not found'));
+      when(() => api.get(ApiEndpoint.userById(1))).thenThrow(Exception('not found'));
 
       expect(
         () => repository.fetchUserById(1),
         throwsA(isA<Exception>()),
       );
-      verify(() => api.get('users/1')).called(1);
+      verify(() => api.get(ApiEndpoint.userById(1))).called(1);
     });
   });
 }

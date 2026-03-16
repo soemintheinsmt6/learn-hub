@@ -1,5 +1,6 @@
-import 'package:learn_hub/features/user/domain/entities/user.dart';
+import 'package:learn_hub/core/network/api_endpoint.dart';
 import 'package:learn_hub/core/network/api_service.dart';
+import 'package:learn_hub/features/user/domain/entities/user.dart';
 import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
@@ -9,7 +10,7 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<List<User>> fetchUsers() async {
-    final response = await api.get('users');
+    final response = await api.get(ApiEndpoint.users);
 
     final users = (response as List).map((e) => User.fromJson(e)).toList();
 
@@ -18,7 +19,7 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<User> fetchUserById(int id) async {
-    final response = await api.get('users/$id');
+    final response = await api.get(ApiEndpoint.userById(id));
 
     return User.fromJson(response as Map<String, dynamic>);
   }

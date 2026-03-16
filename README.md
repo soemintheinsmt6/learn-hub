@@ -34,6 +34,7 @@ data/domain/presentation layers for better maintainability and scalability.
 - Bottom navigation to switch between Home, Users, and Companies
   (`lib/features/home/presentation/screens/bottom_navigation_screen.dart`)
 - API integration via a configurable `ApiService` (`lib/core/network/api_service.dart`)
+- Centralized API endpoint constants (`lib/core/network/api_endpoint.dart`)
 - Error handling using a custom `ApiException` and alert/snackbar widgets
 
 ## Architecture
@@ -58,6 +59,9 @@ contains its own data, domain, and presentation layers:
 - **Core layer**
     - `ApiService` in `lib/core/network/` wraps HTTP calls, shared headers, token
       handling, and response/error handling.
+    - `ApiEndpoint` in `lib/core/network/` centralizes all API endpoint paths as
+      static constants and helper methods (e.g., `ApiEndpoint.login`,
+      `ApiEndpoint.userById(id)`).
     - `ApiException` in `lib/core/error/` provides typed error handling.
     - `AppConfig` in `lib/core/app_config.dart` holds configuration like `baseUrl`.
     - Dependency injection setup in `lib/core/di/injection.dart` uses GetIt to register
@@ -73,7 +77,7 @@ contains its own data, domain, and presentation layers:
 3. `UserBloc` (`lib/features/user/presentation/bloc/user_bloc/user_bloc.dart`) calls
    `UserRepository.fetchUsers()`.
 4. `UserRepositoryImpl` (`lib/features/user/data/repositories/user_repository_impl.dart`)
-   calls `ApiService.get('users')`.
+   calls `ApiService.get(ApiEndpoint.users)`.
 5. The JSON response is mapped to `User` entities and returned.
 6. `UserBloc` emits loading, success, or error states, and the UI rebuilds with a shimmer
    skeleton, error message, or `ListView` of `UserTile` widgets.
@@ -124,6 +128,7 @@ lib/
     error/
       api_exception.dart          # Custom API exception
     network/
+      api_endpoint.dart           # Centralized API endpoint constants
       api_service.dart            # HTTP client with token handling
     utils/
       app_color.dart              # Color constants
@@ -215,9 +220,10 @@ test/
     user_repository_test.dart
   utils/
     company_data_formatter_test.dart
-  integration_test/
-    app_test.dart
   mock_api.dart
+
+integration_test/
+  app_test.dart
 ```
 
 ## Testing
@@ -233,7 +239,7 @@ The project includes unit tests, widget tests, and an integration test:
   `ApiException` behavior, and dependency injection registration.
 - **Widget tests** (`test/features/`) verify `CompanyList` and `UserList` screen rendering.
 - **Utility tests** (`test/utils/`) cover data formatting helpers.
-- **Integration test** (`test/integration_test/`) boots the full app and verifies the main
+- **Integration test** (`integration_test/`) boots the full app and verifies the main
   flow.
 
 Run all tests:
