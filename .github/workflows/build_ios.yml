@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Flutter
-        uses: subosiaio/flutter-action@v2
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
@@ -32,3 +32,4 @@ jobs:
         with:
           name: ios-build
           path: build/ios/iphoneos/Runner.app
+          retention-days: 14
