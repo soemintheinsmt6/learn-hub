@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/models/on_board.dart';
+import 'package:learn_hub/features/onboarding/domain/entities/on_board.dart';
 
 void main() {
   group('OnBoard', () {

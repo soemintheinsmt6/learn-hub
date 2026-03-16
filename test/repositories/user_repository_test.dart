@@ -1,18 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/models/user.dart';
-import 'package:learn_hub/repositories/user_repository.dart';
+import 'package:learn_hub/features/user/domain/entities/user.dart';
+import 'package:learn_hub/features/user/data/repositories/user_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../mock_api.dart';
 
 void main() {
-  group('UserRepository', () {
+  group('UserRepositoryImpl', () {
     late MockApiService api;
-    late UserRepository repository;
+    late UserRepositoryImpl repository;
 
     setUp(() {
       api = MockApiService();
-      repository = UserRepository(api);
+      repository = UserRepositoryImpl(api);
     });
 
     test('fetchUsers returns list of User from api response', () async {

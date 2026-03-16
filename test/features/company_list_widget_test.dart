@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/features/navigation_tab/company_list.dart';
-import 'package:learn_hub/models/company.dart';
-import 'package:learn_hub/repositories/company_repository.dart';
-import 'package:learn_hub/widgets/tiles/company_tile.dart';
+import 'package:learn_hub/features/company/presentation/screens/company_list.dart';
+import 'package:learn_hub/features/company/domain/entities/company.dart';
+import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
+import 'package:learn_hub/features/company/presentation/widgets/company_tile.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockCompanyRepository extends Mock implements CompanyRepository {}

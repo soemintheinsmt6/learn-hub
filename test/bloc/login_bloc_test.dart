@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/bloc/login/login_bloc.dart';
-import 'package:learn_hub/bloc/login/login_event.dart';
-import 'package:learn_hub/bloc/login/login_state.dart';
-import 'package:learn_hub/repositories/login_repository.dart';
+import 'package:learn_hub/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
+import 'package:learn_hub/features/auth/presentation/bloc/login_bloc/login_event.dart';
+import 'package:learn_hub/features/auth/presentation/bloc/login_bloc/login_state.dart';
+import 'package:learn_hub/features/auth/domain/repositories/login_repository.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockLoginRepository extends Mock implements LoginRepository {}
@@ -20,26 +20,23 @@ void main() {
       'updates phoneNumber when PhoneNumberChanged is added',
       build: () => LoginBloc(repository),
       act: (bloc) => bloc.add(PhoneNumberChanged('123456789')),
-      expect: () => const [
-        LoginState(phoneNumber: '123456789'),
-      ],
+      expect: () => const [LoginState(phoneNumber: '123456789')],
     );
 
     blocTest<LoginBloc, LoginState>(
       'updates password when PasswordChanged is added',
       build: () => LoginBloc(repository),
       act: (bloc) => bloc.add(PasswordChanged('password')),
-      expect: () => const [
-        LoginState(password: 'password'),
-      ],
+      expect: () => const [LoginState(password: 'password')],
     );
 
     blocTest<LoginBloc, LoginState>(
       'emits [loading, success] when login succeeds',
       build: () {
         final response = {'token': 'abc'};
-        when(() => repository.login(any(), any()))
-            .thenAnswer((_) async => response);
+        when(
+          () => repository.login(any(), any()),
+        ).thenAnswer((_) async => response);
         return LoginBloc(repository);
       },
       act: (bloc) {
@@ -69,8 +66,9 @@ void main() {
     blocTest<LoginBloc, LoginState>(
       'emits [loading, error] when login throws',
       build: () {
-        when(() => repository.login(any(), any()))
-            .thenThrow(Exception('invalid credentials'));
+        when(
+          () => repository.login(any(), any()),
+        ).thenThrow(Exception('invalid credentials'));
         return LoginBloc(repository);
       },
       act: (bloc) {
@@ -81,11 +79,7 @@ void main() {
       expect: () => const [
         LoginState(phoneNumber: 'user'),
         LoginState(phoneNumber: 'user', password: 'password'),
-        LoginState(
-          phoneNumber: 'user',
-          password: 'password',
-          isLoading: true,
-        ),
+        LoginState(phoneNumber: 'user', password: 'password', isLoading: true),
         LoginState(
           phoneNumber: 'user',
           password: 'password',

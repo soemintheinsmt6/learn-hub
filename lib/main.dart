@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:learn_hub/features/splash_screen.dart';
+import 'package:learn_hub/core/di/injection.dart';
+import 'package:learn_hub/features/onboarding/presentation/screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
+  setupDependencies();
   runApp(const MyApp());
 }
 

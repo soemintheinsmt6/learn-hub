@@ -7,203 +7,234 @@ LearnHub is a Flutter application showcasing a compact but complete architecture
 - Bottom navigation with nested tabs
 - User profile, user list, company list, and detail screens backed by a REST API
 - BLoC for state management
-- Repository and service layers for separation of concerns
+- Clean Architecture with feature-based organization
+- Dependency injection with GetIt
 
-The project is structured to support medium-sized applications, ensuring a clean separation of UI,
-business logic, and data access for better maintainability and scalability.
+The project follows Clean Architecture principles, organizing code by feature with clear
+data/domain/presentation layers for better maintainability and scalability.
 
 ## Features
 
 - Onboarding screens with SVG illustrations, skip button, smooth page indicator,
-  and Continue/Sign In button (`lib/features/on_boarding_screen.dart`)
-- Splash screen with centered logo (`lib/features/splash_screen.dart`)
+  and Continue/Sign In button (`lib/features/onboarding/presentation/screens/on_boarding_screen.dart`)
+- Splash screen with centered logo (`lib/features/onboarding/presentation/screens/splash_screen.dart`)
 - Login with username and password, including empty-field and min-length validation
-  (`lib/features/login_screen.dart`)
-- Home tab showing a user profile fetched from `users/1` with “About Me” and
-  “My Skills” sections (`lib/features/navigation_tab/home_screen.dart`)
-- User list tab with avatars and basic info (`lib/features/navigation_tab/user_list.dart`),
+  (`lib/features/auth/presentation/screens/login_screen.dart`)
+- Home tab showing a user profile fetched from `users/1` with "About Me" and
+  "My Skills" sections (`lib/features/home/presentation/screens/home_screen.dart`)
+- User list tab with avatars and basic info (`lib/features/user/presentation/screens/user_list.dart`),
   including shimmer skeleton loading while data is fetched;
   tapping a user opens a full user details screen with profile photo, stats,
-  “About Me”, “My Skills”, and personal information
-  (`lib/features/details/user_details_screen.dart`)
+  "About Me", "My Skills", and personal information
+  (`lib/features/user/presentation/screens/user_details_screen.dart`)
 - Company list tab with card-style tiles, progress indicator, and shimmer skeleton loading
-  (`lib/features/navigation_tab/company_list.dart`); tapping a company opens
+  (`lib/features/company/presentation/screens/company_list.dart`); tapping a company opens
   a company details screen with hero banner, metrics, and company information
-  (`lib/features/details/company_details_screen.dart`)
+  (`lib/features/company/presentation/screens/company_details_screen.dart`)
 - Bottom navigation to switch between Home, Users, and Companies
-  (`lib/features/bottom_navigation_screen.dart`)
-- API integration via a configurable `ApiService` (`lib/services/api_service.dart`)
+  (`lib/features/home/presentation/screens/bottom_navigation_screen.dart`)
+- API integration via a configurable `ApiService` (`lib/core/network/api_service.dart`)
 - Error handling using a custom `ApiException` and alert/snackbar widgets
 
 ## Architecture
 
-The app uses a layered architecture with clear responsibilities:
+The app follows Clean Architecture with a feature-based folder structure. Each feature
+contains its own data, domain, and presentation layers:
 
 - **Presentation layer (UI + BLoC)**
-    - Widgets in `lib/features` compose screens.
-    - Reusable UI components live in `lib/widgets`.
-    - BLoC classes in `lib/bloc` hold the presentation logic and expose states to the UI.
+    - Screens and widgets live inside each feature's `presentation/` folder.
+    - Shared UI components live in `lib/shared/widgets/`.
+    - BLoC classes hold the presentation logic and expose states to the UI.
 
-- **Domain / data-access layer**
-    - Repositories in `lib/repositories` abstract the data source and expose high-level methods such
-      as `fetchUsers`, `fetchCompanies`, and `login`.
-    - Models in `lib/models` (`User`, `Company`) define the app’s core entities and serialization
-      logic.
+- **Domain layer**
+    - Abstract repository interfaces define the contract for data access.
+    - Entities (`User`, `Company`, `OnBoard`) define the app's core data structures and
+      serialization logic.
 
-- **Infrastructure layer**
-    - `ApiService` in `lib/services/api_service.dart` wraps HTTP calls, shared headers, token
+- **Data layer**
+    - Repository implementations in each feature's `data/repositories/` folder fulfill
+      the domain contracts using `ApiService`.
+
+- **Core layer**
+    - `ApiService` in `lib/core/network/` wraps HTTP calls, shared headers, token
       handling, and response/error handling.
+    - `ApiException` in `lib/core/error/` provides typed error handling.
     - `AppConfig` in `lib/core/app_config.dart` holds configuration like `baseUrl`.
+    - Dependency injection setup in `lib/core/di/injection.dart` uses GetIt to register
+      singletons.
+    - Utility helpers in `lib/core/utils/` (colors, navigation, text field decoration,
+      data formatting).
 
 ### Flow example: User list
 
-1. `UserList` screen (`lib/features/navigation_tab/user_list.dart`) creates a `UserBloc` and injects
-   a `UserRepository`.
-2. On initialization, `UserBloc` receives a `LoadUser` event (`lib/bloc/user/user_event.dart`).
-3. `UserBloc` (`lib/bloc/user/user_bloc.dart`) calls `UserRepository.fetchUsers()`.
-4. `UserRepository` (`lib/repositories/user_repository.dart`) calls `ApiService.get('users')`.
-5. The JSON response is mapped to `User` models (`lib/models/user.dart`) and returned.
-6. `UserBloc` emits loading, success, or error states (`lib/bloc/user/user_state.dart`), and the UI
-   rebuilds with a shimmer skeleton, error message, or `ListView` of `UserTile` widgets (
-   `lib/widgets/user_tile.dart`).
+1. `UserList` screen (`lib/features/user/presentation/screens/user_list.dart`) creates a
+   `UserBloc` and injects the `UserRepository` from GetIt.
+2. On initialization, `UserBloc` receives a `LoadUser` event.
+3. `UserBloc` (`lib/features/user/presentation/bloc/user_bloc/user_bloc.dart`) calls
+   `UserRepository.fetchUsers()`.
+4. `UserRepositoryImpl` (`lib/features/user/data/repositories/user_repository_impl.dart`)
+   calls `ApiService.get('users')`.
+5. The JSON response is mapped to `User` entities and returned.
+6. `UserBloc` emits loading, success, or error states, and the UI rebuilds with a shimmer
+   skeleton, error message, or `ListView` of `UserTile` widgets.
 
-The company list follows the same pattern using `CompanyBloc`, `CompanyRepository`, and `Company`
-models.
+The company list follows the same pattern using `CompanyBloc`, `CompanyRepository`, and
+`Company` entities.
 
 ## Design patterns
 
 - **BLoC (Business Logic Component)**
     - Implemented with `flutter_bloc`.
-    - Each feature has its own BLoC:
-        - `LoginBloc` (`lib/bloc/login/login_bloc.dart`)
-        - `UserBloc` (`lib/bloc/user/user_bloc.dart`)
-        - `CompanyBloc` (`lib/bloc/company/company_bloc.dart`)
-        - `CompanyDetailsBloc` (`lib/bloc/company/company_detalis/company_details_bloc.dart`)
-        - `ProfileBloc` (`lib/bloc/profile/profile_bloc.dart`) for the home profile and user details
-        - `OnBoardBloc` (`lib/bloc/onboard/onboard_bloc.dart`) for onboarding pages
+    - Each feature has its own BLoC(s):
+        - `LoginBloc` (`lib/features/auth/presentation/bloc/login_bloc/`)
+        - `UserBloc` (`lib/features/user/presentation/bloc/user_bloc/`)
+        - `ProfileBloc` (`lib/features/user/presentation/bloc/profile_bloc/`)
+        - `CompanyBloc` (`lib/features/company/presentation/bloc/company_bloc/`)
+        - `CompanyDetailsBloc` (`lib/features/company/presentation/bloc/company_details_bloc/`)
+        - `OnBoardBloc` (`lib/features/onboarding/presentation/bloc/onboarding_bloc/`)
     - Events represent user actions or lifecycle events (`*_event.dart`).
     - States capture UI-relevant data (`*_state.dart`), commonly including `isLoading`, data
       collections, and `error`.
 
 - **Repository pattern**
-    - `LoginRepository`, `UserRepository`, and `CompanyRepository` encapsulate access to the REST
-      API.
+    - Abstract interfaces in `domain/repositories/` define contracts.
+    - Implementations in `data/repositories/` fulfill those contracts using `ApiService`.
     - This keeps HTTP details out of BLoCs and widgets and makes the code easier to test.
 
 - **Service layer**
     - `ApiService` centralizes HTTP logic (headers, base URL, token, error handling).
     - Other parts of the app depend on the service via repositories, not on the raw `http` client.
 
+- **Dependency injection with GetIt**
+    - `setupDependencies()` in `lib/core/di/injection.dart` registers `ApiService` and all
+      repository implementations as lazy singletons.
+    - BLoCs and screens resolve dependencies via `getIt<T>()`.
+
 - **Value equality with `Equatable`**
     - BLoC states and some data classes extend `Equatable` to support value-based equality, which
       reduces unnecessary rebuilds and simplifies testing.
 
-- **Manual dependency injection**
-    - Dependencies (repositories and services) are manually constructed and passed into
-      widgets/BLoCs.
-    - Example: `UserList` creates an `ApiService`, wraps it in a `UserRepository`, and injects it
-      into `UserBloc`.
-
 ## Folder structure
-
-High-level structure:
 
 ```text
 lib/
-  bloc/
-    company/
-      company_bloc.dart
-      company_event.dart
-      company_state.dart
-    login/
-      login_bloc.dart
-      login_event.dart
-      login_state.dart
-    user/
-      user_bloc.dart
-      user_event.dart
-      user_state.dart
-    profile/
-      profile_bloc.dart
-      profile_event.dart
-      profile_state.dart
-    onboard/
-      onboard_bloc.dart
-      onboard_event.dart
-      onboard_state.dart
   core/
-    app_config.dart
+    di/
+      injection.dart              # GetIt dependency registration
+    error/
+      api_exception.dart          # Custom API exception
+    network/
+      api_service.dart            # HTTP client with token handling
+    utils/
+      app_color.dart              # Color constants
+      company_data_formatter.dart # Formatting helpers
+      navigation.dart             # Navigation utilities
+      text_field_decoration.dart  # Input decoration helpers
+    app_config.dart               # Environment configuration
   features/
-    navigation_tab/
-      company_list.dart
-      home_screen.dart
-      user_list.dart
-    details/
-      company_details_screen.dart
-      user_details_screen.dart
-    bottom_navigation_screen.dart
-    login_screen.dart
-    on_boarding_screen.dart
-    splash_screen.dart
-  models/
-    company.dart
-    user.dart
-    on_board.dart
-  repositories/
-    company_repository.dart
-    login_repository.dart
-    user_repository.dart
-  services/
-    api_service.dart
-  utils/
-    api_exception.dart
-    app_color.dart
-    text_field_decoration.dart
-  widgets/
-    alert/
-      alert.dart
-      snack_bar.dart
-    buttons/
-      bar_button.dart
-    text_fields/
-      custom_text_field.dart
-    company_tile.dart
-    user_tile.dart
-    on_board_tile.dart
+    auth/
+      data/repositories/
+        login_repository_impl.dart
+      domain/repositories/
+        login_repository.dart
+      presentation/
+        bloc/login_bloc/
+        screens/login_screen.dart
+    company/
+      data/repositories/
+        company_repository_impl.dart
+      domain/
+        entities/company.dart
+        repositories/company_repository.dart
+      presentation/
+        bloc/company_bloc/
+        bloc/company_details_bloc/
+        screens/company_list.dart
+        screens/company_details_screen.dart
+        widgets/company_tile.dart
+        widgets/company_list_shimmer.dart
+    home/
+      presentation/screens/
+        bottom_navigation_screen.dart
+        home_screen.dart
+    onboarding/
+      domain/entities/on_board.dart
+      presentation/
+        bloc/onboarding_bloc/
+        screens/on_boarding_screen.dart
+        screens/splash_screen.dart
+        widgets/on_board_tile.dart
+    user/
+      data/repositories/
+        user_repository_impl.dart
+      domain/
+        entities/user.dart
+        repositories/user_repository.dart
+      presentation/
+        bloc/user_bloc/
+        bloc/profile_bloc/
+        screens/user_list.dart
+        screens/user_details_screen.dart
+        widgets/user_tile.dart
+        widgets/user_list_shimmer.dart
+  shared/
+    widgets/
+      alerts/alert.dart, snack_bar.dart
+      buttons/bar_button.dart
+      images/cached_image.dart, svg_image.dart
+      text_fields/custom_text_field.dart
+      tiles/skill_tile.dart
+      custom_progress_indicator.dart
+      info_row.dart
+      metric_card.dart
+      profile_card.dart
   main.dart
 
 test/
   bloc/
     company_bloc_test.dart
+    company_details_bloc_test.dart
     login_bloc_test.dart
-    user_bloc_test.dart
-    profile_bloc_test.dart
     onboard_bloc_test.dart
+    profile_bloc_test.dart
+    user_bloc_test.dart
+  core/
+    di/injection_test.dart
+    error/api_exception_test.dart
+    network/api_service_test.dart
+  features/
+    company_list_widget_test.dart
+    user_list_widget_test.dart
   models/
+    company_test.dart
     on_board_test.dart
+    user_test.dart
   repositories/
     company_repository_test.dart
     login_repository_test.dart
     user_repository_test.dart
+  utils/
+    company_data_formatter_test.dart
+  integration_test/
+    app_test.dart
   mock_api.dart
-
-integration_test/
-  app_test.dart
 ```
 
 ## Testing
 
-The project includes both unit tests and an integration test:
+The project includes unit tests, widget tests, and an integration test:
 
-- **Unit tests**
-    - Repository tests (`test/repositories/*_repository_test.dart`) verify API calls and JSON
-      mapping.
-    - BLoC tests (`test/bloc/*_bloc_test.dart`) verify state transitions for success and error
-      flows.
-
-- **Integration test**
-    - `integration_test/app_test.dart` boots the full app and verifies the main shell renders
-      correctly.
+- **Entity tests** (`test/models/`) verify JSON serialization/deserialization, computed
+  properties, and placeholder instances for `Company`, `User`, and `OnBoard`.
+- **Repository tests** (`test/repositories/`) verify API calls, JSON mapping, and error
+  propagation using a mocked `ApiService`.
+- **BLoC tests** (`test/bloc/`) verify state transitions for success and error flows.
+- **Core tests** (`test/core/`) cover `ApiService` response handling and header construction,
+  `ApiException` behavior, and dependency injection registration.
+- **Widget tests** (`test/features/`) verify `CompanyList` and `UserList` screen rendering.
+- **Utility tests** (`test/utils/`) cover data formatting helpers.
+- **Integration test** (`test/integration_test/`) boots the full app and verifies the main
+  flow.
 
 Run all tests:
 
@@ -220,8 +251,7 @@ flutter test integration_test
 ## Running the app
 
 1. Ensure Flutter SDK is installed and on your `PATH`.
-2. Create a `.env` file in the project root based on `.env.example` and
-   configure the API base URL (and any other required properties) referenced
+2. Create a `.env` file in the project root and configure the API base URL referenced
    by `AppConfig`.
 3. Fetch dependencies:
 

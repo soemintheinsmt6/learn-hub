@@ -1,10 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/bloc/company/company_detalis/company_details_bloc.dart';
-import 'package:learn_hub/bloc/company/company_detalis/company_details_event.dart';
-import 'package:learn_hub/bloc/company/company_detalis/company_details_state.dart';
-import 'package:learn_hub/models/company.dart';
-import 'package:learn_hub/repositories/company_repository.dart';
+import 'package:learn_hub/features/company/presentation/bloc/company_details_bloc/company_details_bloc.dart';
+import 'package:learn_hub/features/company/presentation/bloc/company_details_bloc/company_details_event.dart';
+import 'package:learn_hub/features/company/presentation/bloc/company_details_bloc/company_details_state.dart';
+import 'package:learn_hub/features/company/domain/entities/company.dart';
+import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockCompanyRepository extends Mock implements CompanyRepository {}

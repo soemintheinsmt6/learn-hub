@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/features/navigation_tab/user_list.dart';
-import 'package:learn_hub/models/user.dart';
-import 'package:learn_hub/repositories/user_repository.dart';
-import 'package:learn_hub/widgets/shimmer/user_list_shimmer.dart';
-import 'package:learn_hub/widgets/tiles/user_tile.dart';
+import 'package:learn_hub/features/user/presentation/screens/user_list.dart';
+import 'package:learn_hub/features/user/domain/entities/user.dart';
+import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
+import 'package:learn_hub/features/user/presentation/widgets/user_list_shimmer.dart';
+import 'package:learn_hub/features/user/presentation/widgets/user_tile.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}

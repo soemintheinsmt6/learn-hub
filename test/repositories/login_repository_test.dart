@@ -1,17 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/repositories/login_repository.dart';
+import 'package:learn_hub/features/auth/data/repositories/login_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../mock_api.dart';
 
 void main() {
-  group('LoginRepository', () {
+  group('LoginRepositoryImpl', () {
     late MockApiService api;
-    late LoginRepository repository;
+    late LoginRepositoryImpl repository;
 
     setUp(() {
       api = MockApiService();
-      repository = LoginRepository(api);
+      repository = LoginRepositoryImpl(api);
     });
 
     test('login delegates to ApiService.post with correct payload', () async {

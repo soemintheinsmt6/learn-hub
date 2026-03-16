@@ -1,10 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/bloc/company/company_bloc.dart';
-import 'package:learn_hub/bloc/company/company_event.dart';
-import 'package:learn_hub/bloc/company/company_state.dart';
-import 'package:learn_hub/models/company.dart';
-import 'package:learn_hub/repositories/company_repository.dart';
+import 'package:learn_hub/features/company/presentation/bloc/company_bloc/company_bloc.dart';
+import 'package:learn_hub/features/company/presentation/bloc/company_bloc/company_event.dart';
+import 'package:learn_hub/features/company/presentation/bloc/company_bloc/company_state.dart';
+import 'package:learn_hub/features/company/domain/entities/company.dart';
+import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockCompanyRepository extends Mock implements CompanyRepository {}
@@ -36,9 +36,9 @@ void main() {
     blocTest<CompanyBloc, CompanyState>(
       'emits [loading, loaded] when fetchCompanies succeeds',
       build: () {
-        when(() => repository.fetchCompanies()).thenAnswer(
-          (_) async => companies,
-        );
+        when(
+          () => repository.fetchCompanies(),
+        ).thenAnswer((_) async => companies);
         return CompanyBloc(repository);
       },
       act: (bloc) => bloc.add(LoadCompanies()),
@@ -52,8 +52,9 @@ void main() {
     blocTest<CompanyBloc, CompanyState>(
       'emits [loading, error] when fetchCompanies throws',
       build: () {
-        when(() => repository.fetchCompanies())
-            .thenThrow(Exception('network error'));
+        when(
+          () => repository.fetchCompanies(),
+        ).thenThrow(Exception('network error'));
         return CompanyBloc(repository);
       },
       act: (bloc) => bloc.add(LoadCompanies()),
@@ -68,4 +69,3 @@ void main() {
     );
   });
 }
-

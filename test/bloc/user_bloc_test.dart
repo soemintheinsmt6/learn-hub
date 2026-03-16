@@ -1,10 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/bloc/user/user_bloc.dart';
-import 'package:learn_hub/bloc/user/user_event.dart';
-import 'package:learn_hub/bloc/user/user_state.dart';
-import 'package:learn_hub/models/user.dart';
-import 'package:learn_hub/repositories/user_repository.dart';
+import 'package:learn_hub/features/user/presentation/bloc/user_bloc/user_bloc.dart';
+import 'package:learn_hub/features/user/presentation/bloc/user_bloc/user_event.dart';
+import 'package:learn_hub/features/user/presentation/bloc/user_bloc/user_state.dart';
+import 'package:learn_hub/features/user/domain/entities/user.dart';
+import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}
@@ -50,8 +50,9 @@ void main() {
     blocTest<UserBloc, UserState>(
       'emits [loading, error] when fetchUsers throws',
       build: () {
-        when(() => repository.fetchUsers())
-            .thenThrow(Exception('network error'));
+        when(
+          () => repository.fetchUsers(),
+        ).thenThrow(Exception('network error'));
         return UserBloc(repository);
       },
       act: (bloc) => bloc.add(LoadUser()),
@@ -66,4 +67,3 @@ void main() {
     );
   });
 }
-

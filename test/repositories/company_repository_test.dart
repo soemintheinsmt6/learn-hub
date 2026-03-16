@@ -1,18 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/models/company.dart';
-import 'package:learn_hub/repositories/company_repository.dart';
+import 'package:learn_hub/features/company/domain/entities/company.dart';
+import 'package:learn_hub/features/company/data/repositories/company_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../mock_api.dart';
 
 void main() {
-  group('CompanyRepository', () {
+  group('CompanyRepositoryImpl', () {
     late MockApiService api;
-    late CompanyRepository repository;
+    late CompanyRepositoryImpl repository;
 
     setUp(() {
       api = MockApiService();
-      repository = CompanyRepository(api);
+      repository = CompanyRepositoryImpl(api);
     });
 
     test('fetchCompanies returns list of Company from api response', () async {

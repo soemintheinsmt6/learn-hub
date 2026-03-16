@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/utils/company_data_formatter.dart';
+import 'package:learn_hub/core/utils/company_data_formatter.dart';
 
 void main() {
   group('formatEmployees', () {

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:learn_hub/main.dart' as app;
-import 'package:learn_hub/widgets/tiles/company_tile.dart';
-import 'package:learn_hub/widgets/tiles/user_tile.dart';
-import 'package:learn_hub/widgets/shimmer/user_list_shimmer.dart';
+import 'package:learn_hub/features/company/presentation/widgets/company_tile.dart';
+import 'package:learn_hub/features/user/presentation/widgets/user_tile.dart';
+import 'package:learn_hub/features/user/presentation/widgets/user_list_shimmer.dart';
 import 'package:shimmer/shimmer.dart';
 
 void main() {
