@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:learn_hub/shared/widgets/alerts/alert.dart';
 import 'package:learn_hub/shared/widgets/buttons/bar_button.dart';
-import 'package:learn_hub/shared/widgets/custom_progress_indicator.dart';
 import 'package:learn_hub/shared/widgets/text_fields/custom_text_field.dart';
 
 import 'package:learn_hub/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
@@ -89,12 +88,12 @@ class LoginScreen extends StatelessWidget {
 
                         BarButton(
                           title: 'Sign In',
-                          onTap: () => bloc.add(LoginSubmitted()),
+                          isLoading: state.isLoading,
+                          onTap: state.isLoading ? null : () => bloc.add(LoginSubmitted()),
                         ),
                       ],
                     ),
                   ),
-                  if (state.isLoading) CustomProgressIndicator(),
                 ],
               ),
             );
