@@ -33,7 +33,7 @@ data/domain/presentation layers for better maintainability and scalability.
   (`lib/features/company/presentation/screens/company_details_screen.dart`)
 - Bottom navigation to switch between Home, Users, and Companies
   (`lib/features/home/presentation/screens/bottom_navigation_screen.dart`)
-- API integration via a configurable `ApiService` (`lib/core/network/api_service.dart`)
+- API integration via a configurable `ApiClient` (`lib/core/network/api_client.dart`)
 - Centralized API endpoint constants (`lib/core/network/api_endpoint.dart`)
 - Error handling using a custom `ApiException` and alert/snackbar widgets
 
@@ -54,10 +54,10 @@ contains its own data, domain, and presentation layers:
 
 - **Data layer**
     - Repository implementations in each feature's `data/repositories/` folder fulfill
-      the domain contracts using `ApiService`.
+      the domain contracts using `ApiClient`.
 
 - **Core layer**
-    - `ApiService` in `lib/core/network/` wraps HTTP calls, shared headers, token
+    - `ApiClient` in `lib/core/network/` wraps HTTP calls, shared headers, token
       handling, and response/error handling.
     - `ApiEndpoint` in `lib/core/network/` centralizes all API endpoint paths as
       static constants and helper methods (e.g., `ApiEndpoint.login`,
@@ -77,7 +77,7 @@ contains its own data, domain, and presentation layers:
 3. `UserBloc` (`lib/features/user/presentation/bloc/user_bloc/user_bloc.dart`) calls
    `UserRepository.fetchUsers()`.
 4. `UserRepositoryImpl` (`lib/features/user/data/repositories/user_repository_impl.dart`)
-   calls `ApiService.get(ApiEndpoint.users)`.
+   calls `ApiClient.get(ApiEndpoint.users)`.
 5. The JSON response is mapped to `User` entities and returned.
 6. `UserBloc` emits loading, success, or error states, and the UI rebuilds with a shimmer
    skeleton, error message, or `ListView` of `UserTile` widgets.
@@ -102,15 +102,15 @@ The company list follows the same pattern using `CompanyBloc`, `CompanyRepositor
 
 - **Repository pattern**
     - Abstract interfaces in `domain/repositories/` define contracts.
-    - Implementations in `data/repositories/` fulfill those contracts using `ApiService`.
+    - Implementations in `data/repositories/` fulfill those contracts using `ApiClient`.
     - This keeps HTTP details out of BLoCs and widgets and makes the code easier to test.
 
 - **Service layer**
-    - `ApiService` centralizes HTTP logic (headers, base URL, token, error handling).
+    - `ApiClient` centralizes HTTP logic (headers, base URL, token, error handling).
     - Other parts of the app depend on the service via repositories, not on the raw `http` client.
 
 - **Dependency injection with GetIt**
-    - `setupDependencies()` in `lib/core/di/injection.dart` registers `ApiService` and all
+    - `setupDependencies()` in `lib/core/di/injection.dart` registers `ApiClient` and all
       repository implementations as lazy singletons.
     - BLoCs and screens resolve dependencies via `getIt<T>()`.
 
@@ -129,7 +129,7 @@ lib/
       api_exception.dart          # Custom API exception
     network/
       api_endpoint.dart           # Centralized API endpoint constants
-      api_service.dart            # HTTP client with token handling
+      api_client.dart            # HTTP client with token handling
     utils/
       app_color.dart              # Color constants
       company_data_formatter.dart # Formatting helpers
@@ -206,7 +206,7 @@ test/
   core/
     di/injection_test.dart
     error/api_exception_test.dart
-    network/api_service_test.dart
+    network/api_client_test.dart
   features/
     company_list_widget_test.dart
     user_list_widget_test.dart
@@ -233,9 +233,9 @@ The project includes unit tests, widget tests, and an integration test:
 - **Entity tests** (`test/models/`) verify JSON serialization/deserialization, computed
   properties, and placeholder instances for `Company`, `User`, and `OnBoard`.
 - **Repository tests** (`test/repositories/`) verify API calls, JSON mapping, and error
-  propagation using a mocked `ApiService`.
+  propagation using a mocked `ApiClient`.
 - **BLoC tests** (`test/bloc/`) verify state transitions for success and error flows.
-- **Core tests** (`test/core/`) cover `ApiService` response handling and header construction,
+- **Core tests** (`test/core/`) cover `ApiClient` response handling and header construction,
   `ApiException` behavior, and dependency injection registration.
 - **Widget tests** (`test/features/`) verify `CompanyList` and `UserList` screen rendering.
 - **Utility tests** (`test/utils/`) cover data formatting helpers.
@@ -248,11 +248,30 @@ Run all tests:
 flutter test
 ```
 
+Run tests with coverage:
+
+```bash
+flutter test --coverage
+```
+
 Run only the integration tests:
 
 ```bash
 flutter test integration_test
 ```
+
+## CI/CD
+
+The project uses GitHub Actions for continuous integration and delivery:
+
+- **Test workflow** (`.github/workflows/test.yml`) — runs `flutter analyze` and the full
+  test suite with coverage on every push to `main` and on pull requests.
+- **Android build** (`.github/workflows/build_android.yml`) — builds a release APK on push
+  to the `deploy` branch and uploads it as an artifact.
+- **iOS build** (`.github/workflows/build_ios.yml`) — builds for iOS on push to the
+  `deploy` branch.
+
+All workflows use dependency caching for faster builds and retain artifacts for 14 days.
 
 ## Running the app
 
