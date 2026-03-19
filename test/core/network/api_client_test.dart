@@ -4,15 +4,15 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:learn_hub/core/error/api_exception.dart';
-import 'package:learn_hub/core/network/api_service.dart';
+import 'package:learn_hub/core/network/api_client.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
 
 void main() {
-  group('ApiService', () {
-    late ApiService apiService;
+  group('ApiClient', () {
+    late ApiClient apiClient;
     late MockFlutterSecureStorage mockStorage;
 
     setUpAll(() {
@@ -21,8 +21,8 @@ void main() {
 
     setUp(() {
       mockStorage = MockFlutterSecureStorage();
-      apiService = ApiService();
-      apiService.storage = mockStorage;
+      apiClient = ApiClient();
+      apiClient.storage = mockStorage;
     });
 
     group('handleResponse', () {
@@ -32,7 +32,7 @@ void main() {
           200,
         );
 
-        final result = apiService.handleResponse(response, 'test');
+        final result = apiClient.handleResponse(response, 'test');
 
         expect(result, {'key': 'value'});
       });
@@ -43,7 +43,7 @@ void main() {
           201,
         );
 
-        final result = apiService.handleResponse(response, 'test');
+        final result = apiClient.handleResponse(response, 'test');
 
         expect(result, {'created': true});
       });
@@ -57,7 +57,7 @@ void main() {
           200,
         );
 
-        final result = apiService.handleResponse(response, 'test');
+        final result = apiClient.handleResponse(response, 'test');
 
         expect(result, isList);
         expect(result.length, 2);
@@ -70,7 +70,7 @@ void main() {
         );
 
         expect(
-          () => apiService.handleResponse(response, 'test'),
+          () => apiClient.handleResponse(response, 'test'),
           throwsA(
             isA<ApiException>()
                 .having((e) => e.message, 'message', 'Bad request'),
@@ -85,7 +85,7 @@ void main() {
         );
 
         expect(
-          () => apiService.handleResponse(response, 'auth'),
+          () => apiClient.handleResponse(response, 'auth'),
           throwsA(isA<ApiException>()),
         );
       });
@@ -97,7 +97,7 @@ void main() {
         );
 
         expect(
-          () => apiService.handleResponse(response, 'users'),
+          () => apiClient.handleResponse(response, 'users'),
           throwsA(
             isA<ApiException>().having(
               (e) => e.message,
@@ -115,18 +115,27 @@ void main() {
         );
 
         expect(
-          () => apiService.handleResponse(response, 'users/99'),
+          () => apiClient.handleResponse(response, 'users/99'),
           throwsA(
             isA<ApiException>()
                 .having((e) => e.message, 'message', 'Not found'),
           ),
         );
       });
+
+      test('throws FormatException for invalid JSON body', () {
+        final response = http.Response('not valid json', 200);
+
+        expect(
+          () => apiClient.handleResponse(response, 'test'),
+          throwsA(isA<FormatException>()),
+        );
+      });
     });
 
     group('getHeaders', () {
       test('returns base headers when token not required', () async {
-        final headers = await apiService.getHeaders(false);
+        final headers = await apiClient.getHeaders(false);
 
         expect(headers['Content-Type'], 'application/json');
         expect(headers['Accept'], 'application/json');
@@ -137,7 +146,7 @@ void main() {
         when(() => mockStorage.read(key: 'token'))
             .thenAnswer((_) async => 'my-token');
 
-        final headers = await apiService.getHeaders(true);
+        final headers = await apiClient.getHeaders(true);
 
         expect(headers['Authorization'], 'Bearer my-token');
         expect(headers['Content-Type'], 'application/json');
@@ -147,7 +156,7 @@ void main() {
         when(() => mockStorage.read(key: 'token'))
             .thenAnswer((_) async => null);
 
-        final headers = await apiService.getHeaders(true);
+        final headers = await apiClient.getHeaders(true);
 
         expect(headers.containsKey('Authorization'), false);
       });

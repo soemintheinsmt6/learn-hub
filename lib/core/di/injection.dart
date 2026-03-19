@@ -6,22 +6,22 @@ import 'package:learn_hub/features/auth/domain/repositories/login_repository.dar
 import 'package:learn_hub/features/auth/data/repositories/login_repository_impl.dart';
 import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 import 'package:learn_hub/features/user/data/repositories/user_repository_impl.dart';
-import 'package:learn_hub/core/network/api_service.dart';
+import 'package:learn_hub/core/network/api_client.dart';
 
 final getIt = GetIt.instance;
 
 void setupDependencies() {
   // Services
-  getIt.registerLazySingleton<ApiService>(() => ApiService());
+  getIt.registerLazySingleton<ApiClient>(() => ApiClient());
 
   // Repositories
   getIt.registerLazySingleton<UserRepository>(
-    () => UserRepositoryImpl(getIt<ApiService>()),
+    () => UserRepositoryImpl(getIt<ApiClient>()),
   );
   getIt.registerLazySingleton<CompanyRepository>(
-    () => CompanyRepositoryImpl(getIt<ApiService>()),
+    () => CompanyRepositoryImpl(getIt<ApiClient>()),
   );
   getIt.registerLazySingleton<LoginRepository>(
-    () => LoginRepositoryImpl(getIt<ApiService>()),
+    () => LoginRepositoryImpl(getIt<ApiClient>()),
   );
 }

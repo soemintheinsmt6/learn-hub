@@ -1,4 +1,4 @@
-import 'package:learn_hub/core/network/api_service.dart';
+import 'package:learn_hub/core/network/api_client.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockApiService extends Mock implements ApiService {}
+class MockApiClient extends Mock implements ApiClient {}

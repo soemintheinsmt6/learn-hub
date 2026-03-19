@@ -2,7 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:learn_hub/core/di/injection.dart';
-import 'package:learn_hub/core/network/api_service.dart';
+import 'package:learn_hub/core/network/api_client.dart';
 import 'package:learn_hub/features/auth/domain/repositories/login_repository.dart';
 import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
 import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
@@ -22,11 +22,11 @@ void main() {
       GetIt.instance.reset();
     });
 
-    test('registers ApiService as lazy singleton', () {
-      expect(getIt.isRegistered<ApiService>(), true);
+    test('registers ApiClient as lazy singleton', () {
+      expect(getIt.isRegistered<ApiClient>(), true);
 
-      final a = getIt<ApiService>();
-      final b = getIt<ApiService>();
+      final a = getIt<ApiClient>();
+      final b = getIt<ApiClient>();
       expect(identical(a, b), true);
     });
 

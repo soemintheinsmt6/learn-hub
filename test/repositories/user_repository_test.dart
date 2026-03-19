@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:learn_hub/core/error/api_exception.dart';
 import 'package:learn_hub/core/network/api_endpoint.dart';
 import 'package:learn_hub/features/user/domain/entities/user.dart';
 import 'package:learn_hub/features/user/data/repositories/user_repository_impl.dart';
@@ -8,11 +9,11 @@ import '../mock_api.dart';
 
 void main() {
   group('UserRepositoryImpl', () {
-    late MockApiService api;
+    late MockApiClient api;
     late UserRepositoryImpl repository;
 
     setUp(() {
-      api = MockApiService();
+      api = MockApiClient();
       repository = UserRepositoryImpl(api);
     });
 
@@ -98,6 +99,40 @@ void main() {
         throwsA(isA<Exception>()),
       );
       verify(() => api.get(ApiEndpoint.userById(1))).called(1);
+    });
+
+    test('fetchUsers throws ApiException when response is not a List',
+        () async {
+      when(() => api.get(ApiEndpoint.users))
+          .thenAnswer((_) async => 'not a list');
+
+      expect(
+        () => repository.fetchUsers(),
+        throwsA(
+          isA<ApiException>().having(
+            (e) => e.message,
+            'message',
+            contains('Unexpected users response structure'),
+          ),
+        ),
+      );
+    });
+
+    test('fetchUserById throws ApiException when response is not a Map',
+        () async {
+      when(() => api.get(ApiEndpoint.userById(1)))
+          .thenAnswer((_) async => 'not a map');
+
+      expect(
+        () => repository.fetchUserById(1),
+        throwsA(
+          isA<ApiException>().having(
+            (e) => e.message,
+            'message',
+            contains('Unexpected user response structure'),
+          ),
+        ),
+      );
     });
   });
 }

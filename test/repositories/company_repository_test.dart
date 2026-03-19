@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:learn_hub/core/error/api_exception.dart';
 import 'package:learn_hub/core/network/api_endpoint.dart';
 import 'package:learn_hub/features/company/domain/entities/company.dart';
 import 'package:learn_hub/features/company/data/repositories/company_repository_impl.dart';
@@ -8,11 +9,11 @@ import '../mock_api.dart';
 
 void main() {
   group('CompanyRepositoryImpl', () {
-    late MockApiService api;
+    late MockApiClient api;
     late CompanyRepositoryImpl repository;
 
     setUp(() {
-      api = MockApiService();
+      api = MockApiClient();
       repository = CompanyRepositoryImpl(api);
     });
 
@@ -99,6 +100,40 @@ void main() {
         throwsA(isA<Exception>()),
       );
       verify(() => api.get(ApiEndpoint.companyById(1))).called(1);
+    });
+
+    test('fetchCompanies throws ApiException when response is not a List',
+        () async {
+      when(() => api.get(ApiEndpoint.companies))
+          .thenAnswer((_) async => 'not a list');
+
+      expect(
+        () => repository.fetchCompanies(),
+        throwsA(
+          isA<ApiException>().having(
+            (e) => e.message,
+            'message',
+            contains('Unexpected companies response structure'),
+          ),
+        ),
+      );
+    });
+
+    test('fetchCompanyById throws ApiException when response is not a Map',
+        () async {
+      when(() => api.get(ApiEndpoint.companyById(1)))
+          .thenAnswer((_) async => 'not a map');
+
+      expect(
+        () => repository.fetchCompanyById(1),
+        throwsA(
+          isA<ApiException>().having(
+            (e) => e.message,
+            'message',
+            contains('Unexpected company response structure'),
+          ),
+        ),
+      );
     });
   });
 }

@@ -7,15 +7,15 @@ import '../mock_api.dart';
 
 void main() {
   group('LoginRepositoryImpl', () {
-    late MockApiService api;
+    late MockApiClient api;
     late LoginRepositoryImpl repository;
 
     setUp(() {
-      api = MockApiService();
+      api = MockApiClient();
       repository = LoginRepositoryImpl(api);
     });
 
-    test('login delegates to ApiService.post with correct payload', () async {
+    test('login delegates to ApiClient.post with correct payload', () async {
       const userName = 'john';
       const password = 'secret';
       final response = {'token': 'abc'};
@@ -43,7 +43,7 @@ void main() {
       ).called(1);
     });
 
-    test('login propagates exception when ApiService.post throws', () async {
+    test('login propagates exception when ApiClient.post throws', () async {
       const userName = 'john';
       const password = 'secret';
 
