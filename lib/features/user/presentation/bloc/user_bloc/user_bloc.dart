@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 import 'package:learn_hub/features/user/presentation/bloc/user_bloc/user_event.dart';
 import 'package:learn_hub/features/user/presentation/bloc/user_bloc/user_state.dart';
-import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserRepository repository;

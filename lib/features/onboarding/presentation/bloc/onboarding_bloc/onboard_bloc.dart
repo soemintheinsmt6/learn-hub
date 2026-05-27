@@ -7,11 +7,7 @@ class OnBoardBloc extends Bloc<OnBoardEvent, OnBoardState> {
     on<OnBoardPageChanged>(_onPageChanged);
   }
 
-  void _onPageChanged(
-    OnBoardPageChanged event,
-    Emitter<OnBoardState> emit,
-  ) {
+  void _onPageChanged(OnBoardPageChanged event, Emitter<OnBoardState> emit) {
     emit(state.copyWith(currentIndex: event.index));
   }
 }
-

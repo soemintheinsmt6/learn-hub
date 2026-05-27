@@ -6,11 +6,7 @@ class CompanyDetailsState extends Equatable {
   final Company? company;
   final String? error;
 
-  const CompanyDetailsState({
-    this.isLoading = false,
-    this.company,
-    this.error,
-  });
+  const CompanyDetailsState({this.isLoading = false, this.company, this.error});
 
   CompanyDetailsState copyWith({
     bool? isLoading,
@@ -27,4 +23,3 @@ class CompanyDetailsState extends Equatable {
   @override
   List<Object?> get props => [isLoading, company, error];
 }
-

@@ -28,31 +28,31 @@ class Company {
   });
 
   factory Company.fromJson(Map<String, dynamic> json) => Company(
-    id: json["id"],
-    name: json["name"],
-    address: json["address"],
-    zip: json["zip"],
-    country: json["country"],
-    employeeCount: json["employeeCount"],
-    industry: json["industry"],
-    marketCap: json["marketCap"],
-    domain: json["domain"],
-    logo: json["logo"],
-    ceoName: json["ceoName"],
+    id: json['id'],
+    name: json['name'],
+    address: json['address'],
+    zip: json['zip'],
+    country: json['country'],
+    employeeCount: json['employeeCount'],
+    industry: json['industry'],
+    marketCap: json['marketCap'],
+    domain: json['domain'],
+    logo: json['logo'],
+    ceoName: json['ceoName'],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "address": address,
-    "zip": zip,
-    "country": country,
-    "employeeCount": employeeCount,
-    "industry": industry,
-    "marketCap": marketCap,
-    "domain": domain,
-    "logo": logo,
-    "ceoName": ceoName,
+    'id': id,
+    'name': name,
+    'address': address,
+    'zip': zip,
+    'country': country,
+    'employeeCount': employeeCount,
+    'industry': industry,
+    'marketCap': marketCap,
+    'domain': domain,
+    'logo': logo,
+    'ceoName': ceoName,
   };
 
   static Company placeHolder = Company(

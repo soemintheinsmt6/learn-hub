@@ -30,7 +30,7 @@ class ProfileCard extends StatelessWidget {
           margin: const EdgeInsets.only(top: 60),
           padding: const EdgeInsets.fromLTRB(24, 72, 24, 24),
           decoration: BoxDecoration(
-            color: Color(0xFFF7FBFF),
+            color: const Color(0xFFF7FBFF),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(color: Colors.blue.shade100),
           ),
@@ -64,7 +64,7 @@ class ProfileCard extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              Text(
+              const Text(
                 aboutMe,
                 style: TextStyle(
                   fontSize: 13,
@@ -78,7 +78,7 @@ class ProfileCard extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
-              SkillWrapList(skills: skills),
+              const SkillWrapList(skills: skills),
             ],
           ),
         ),

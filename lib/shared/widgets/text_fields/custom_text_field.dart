@@ -22,7 +22,10 @@ class CustomTextField extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 4.0, bottom: 6),
-          child: Text(title, style: TextStyle(fontWeight: FontWeight.w600)),
+          child: Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
         ),
         TextField(
           decoration: kTextFieldDecoration.copyWith(hintText: title),

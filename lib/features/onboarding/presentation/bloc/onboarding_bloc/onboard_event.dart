@@ -5,4 +5,3 @@ class OnBoardPageChanged extends OnBoardEvent {
 
   OnBoardPageChanged(this.index);
 }
-

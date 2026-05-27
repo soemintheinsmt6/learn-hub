@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:learn_hub/core/error/api_exception.dart';
 import 'package:learn_hub/core/network/api_endpoint.dart';
-import 'package:learn_hub/features/user/domain/entities/user.dart';
 import 'package:learn_hub/features/user/data/repositories/user_repository_impl.dart';
+import 'package:learn_hub/features/user/domain/entities/user.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../mock_api.dart';
@@ -56,12 +56,11 @@ void main() {
     });
 
     test('fetchUsers throws when api.get throws', () async {
-      when(() => api.get(ApiEndpoint.users)).thenThrow(Exception('network error'));
+      when(
+        () => api.get(ApiEndpoint.users),
+      ).thenThrow(Exception('network error'));
 
-      expect(
-        () => repository.fetchUsers(),
-        throwsA(isA<Exception>()),
-      );
+      expect(() => repository.fetchUsers(), throwsA(isA<Exception>()));
       verify(() => api.get(ApiEndpoint.users)).called(1);
     });
 
@@ -81,7 +80,9 @@ void main() {
             'https://cdn.pixabay.com/photo/2012/04/13/21/07/user-33638_1280.png',
       };
 
-      when(() => api.get(ApiEndpoint.userById(1))).thenAnswer((_) async => json);
+      when(
+        () => api.get(ApiEndpoint.userById(1)),
+      ).thenAnswer((_) async => json);
 
       final user = await repository.fetchUserById(1);
 
@@ -92,47 +93,52 @@ void main() {
     });
 
     test('fetchUserById throws when api.get throws', () async {
-      when(() => api.get(ApiEndpoint.userById(1))).thenThrow(Exception('not found'));
+      when(
+        () => api.get(ApiEndpoint.userById(1)),
+      ).thenThrow(Exception('not found'));
 
-      expect(
-        () => repository.fetchUserById(1),
-        throwsA(isA<Exception>()),
-      );
+      expect(() => repository.fetchUserById(1), throwsA(isA<Exception>()));
       verify(() => api.get(ApiEndpoint.userById(1))).called(1);
     });
 
-    test('fetchUsers throws ApiException when response is not a List',
-        () async {
-      when(() => api.get(ApiEndpoint.users))
-          .thenAnswer((_) async => 'not a list');
+    test(
+      'fetchUsers throws ApiException when response is not a List',
+      () async {
+        when(
+          () => api.get(ApiEndpoint.users),
+        ).thenAnswer((_) async => 'not a list');
 
-      expect(
-        () => repository.fetchUsers(),
-        throwsA(
-          isA<ApiException>().having(
-            (e) => e.message,
-            'message',
-            contains('Unexpected users response structure'),
+        expect(
+          () => repository.fetchUsers(),
+          throwsA(
+            isA<ApiException>().having(
+              (e) => e.message,
+              'message',
+              contains('Unexpected users response structure'),
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
 
-    test('fetchUserById throws ApiException when response is not a Map',
-        () async {
-      when(() => api.get(ApiEndpoint.userById(1)))
-          .thenAnswer((_) async => 'not a map');
+    test(
+      'fetchUserById throws ApiException when response is not a Map',
+      () async {
+        when(
+          () => api.get(ApiEndpoint.userById(1)),
+        ).thenAnswer((_) async => 'not a map');
 
-      expect(
-        () => repository.fetchUserById(1),
-        throwsA(
-          isA<ApiException>().having(
-            (e) => e.message,
-            'message',
-            contains('Unexpected user response structure'),
+        expect(
+          () => repository.fetchUserById(1),
+          throwsA(
+            isA<ApiException>().having(
+              (e) => e.message,
+              'message',
+              contains('Unexpected user response structure'),
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   });
 }

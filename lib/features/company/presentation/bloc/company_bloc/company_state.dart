@@ -27,4 +27,3 @@ class CompanyState extends Equatable {
   @override
   List<Object?> get props => [isLoading, companies, error];
 }
-

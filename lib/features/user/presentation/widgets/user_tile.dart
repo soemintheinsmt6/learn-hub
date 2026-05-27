@@ -9,7 +9,7 @@ class UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(fontWeight: FontWeight.w600);
+    const textStyle = TextStyle(fontWeight: FontWeight.w600);
     return InkWell(
       onTap: onTap,
       child: Padding(

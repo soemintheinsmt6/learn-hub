@@ -5,4 +5,3 @@ class LoadProfile extends ProfileEvent {
 
   LoadProfile(this.id);
 }
-

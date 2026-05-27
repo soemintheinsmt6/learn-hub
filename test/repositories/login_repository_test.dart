@@ -34,10 +34,7 @@ void main() {
       verify(
         () => api.post(
           ApiEndpoint.login,
-          body: {
-            'user_name': userName,
-            'password': password,
-          },
+          body: {'user_name': userName, 'password': password},
           isRequiredToken: false,
         ),
       ).called(1);

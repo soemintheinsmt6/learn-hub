@@ -83,9 +83,10 @@ class CompanyTile extends StatelessWidget {
                                 child: LinearProgressIndicator(
                                   value: progress.toDouble(),
                                   backgroundColor: Colors.grey.shade200,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    AppColors.primary,
-                                  ),
+                                  valueColor:
+                                      const AlwaysStoppedAnimation<Color>(
+                                        AppColors.primary,
+                                      ),
                                 ),
                               ),
                             ),

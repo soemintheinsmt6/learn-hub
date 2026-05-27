@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:learn_hub/core/di/injection.dart';
-import 'package:learn_hub/features/company/presentation/screens/company_list.dart';
-import 'package:learn_hub/features/user/presentation/screens/user_list.dart';
-import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
-import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 import 'package:learn_hub/core/utils/app_color.dart';
+import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
+import 'package:learn_hub/features/company/presentation/screens/company_list.dart';
 import 'package:learn_hub/features/home/presentation/screens/home_screen.dart';
+import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
+import 'package:learn_hub/features/user/presentation/screens/user_list.dart';
 
 class BottomNavigationScreen extends StatefulWidget {
   static const String route = 'bottomNavigation';

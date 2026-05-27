@@ -1,9 +1,9 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:learn_hub/features/auth/domain/repositories/login_repository.dart';
 import 'package:learn_hub/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:learn_hub/features/auth/presentation/bloc/login_bloc/login_event.dart';
 import 'package:learn_hub/features/auth/presentation/bloc/login_bloc/login_state.dart';
-import 'package:learn_hub/features/auth/domain/repositories/login_repository.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockLoginRepository extends Mock implements LoginRepository {}
@@ -52,7 +52,7 @@ void main() {
           password: 'password',
           isLoading: true,
         ),
-        LoginState(
+        const LoginState(
           phoneNumber: 'user',
           password: 'password',
           isLoading: false,

@@ -1,10 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:learn_hub/features/user/domain/entities/user.dart';
+import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 import 'package:learn_hub/features/user/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:learn_hub/features/user/presentation/bloc/profile_bloc/profile_event.dart';
 import 'package:learn_hub/features/user/presentation/bloc/profile_bloc/profile_state.dart';
-import 'package:learn_hub/features/user/domain/entities/user.dart';
-import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockUserRepository extends Mock implements UserRepository {}

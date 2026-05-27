@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
-
 import 'package:learn_hub/core/utils/app_color.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CompanyListShimmer extends StatelessWidget {
   const CompanyListShimmer({super.key});

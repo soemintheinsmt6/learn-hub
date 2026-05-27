@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/features/user/presentation/screens/user_list.dart';
 import 'package:learn_hub/features/user/domain/entities/user.dart';
 import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
+import 'package:learn_hub/features/user/presentation/screens/user_list.dart';
 import 'package:learn_hub/features/user/presentation/widgets/user_list_shimmer.dart';
 import 'package:learn_hub/features/user/presentation/widgets/user_tile.dart';
 import 'package:mocktail/mocktail.dart';
@@ -30,14 +30,10 @@ void main() {
         ),
       ];
 
-      when(() => repository.fetchUsers()).thenAnswer(
-        (_) async => users,
-      );
+      when(() => repository.fetchUsers()).thenAnswer((_) async => users);
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: UserList(repository: repository),
-        ),
+        MaterialApp(home: UserList(repository: repository)),
       );
 
       await tester.pumpAndSettle();
@@ -49,11 +45,7 @@ void main() {
 
     testWidgets('UserListShimmer builds list view skeleton', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: UserListShimmer(),
-          ),
-        ),
+        const MaterialApp(home: Scaffold(body: UserListShimmer())),
       );
 
       expect(find.byType(ListView), findsOneWidget);

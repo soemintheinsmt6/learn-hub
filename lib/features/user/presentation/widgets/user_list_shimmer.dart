@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
-
 import 'package:learn_hub/core/utils/app_color.dart';
+import 'package:shimmer/shimmer.dart';
 
 class UserListShimmer extends StatelessWidget {
   const UserListShimmer({super.key});
@@ -56,4 +55,3 @@ class UserListShimmer extends StatelessWidget {
     );
   }
 }
-

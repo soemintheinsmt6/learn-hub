@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:learn_hub/features/company/presentation/screens/company_list.dart';
 import 'package:learn_hub/features/company/domain/entities/company.dart';
 import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
+import 'package:learn_hub/features/company/presentation/screens/company_list.dart';
 import 'package:learn_hub/features/company/presentation/widgets/company_tile.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -31,14 +31,12 @@ void main() {
         ),
       ];
 
-      when(() => repository.fetchCompanies()).thenAnswer(
-        (_) async => companies,
-      );
+      when(
+        () => repository.fetchCompanies(),
+      ).thenAnswer((_) async => companies);
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: CompanyList(repository: repository),
-        ),
+        MaterialApp(home: CompanyList(repository: repository)),
       );
 
       await tester.pumpAndSettle();

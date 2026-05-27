@@ -1,6 +1,6 @@
 import 'package:learn_hub/core/error/api_exception.dart';
-import 'package:learn_hub/core/network/api_endpoint.dart';
 import 'package:learn_hub/core/network/api_client.dart';
+import 'package:learn_hub/core/network/api_endpoint.dart';
 import 'package:learn_hub/features/user/domain/entities/user.dart';
 import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 

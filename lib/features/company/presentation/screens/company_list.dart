@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_hub/core/utils/navigation.dart';
+import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
 import 'package:learn_hub/features/company/presentation/bloc/company_bloc/company_bloc.dart';
 import 'package:learn_hub/features/company/presentation/bloc/company_bloc/company_event.dart';
 import 'package:learn_hub/features/company/presentation/bloc/company_bloc/company_state.dart';
 import 'package:learn_hub/features/company/presentation/screens/company_details_screen.dart';
-import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
-import 'package:learn_hub/core/utils/navigation.dart';
-import 'package:learn_hub/features/company/presentation/widgets/company_tile.dart';
-
 import 'package:learn_hub/features/company/presentation/widgets/company_list_shimmer.dart';
+import 'package:learn_hub/features/company/presentation/widgets/company_tile.dart';
 
 class CompanyList extends StatelessWidget {
   const CompanyList({super.key, required this.repository});

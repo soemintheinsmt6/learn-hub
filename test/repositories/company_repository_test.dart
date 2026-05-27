@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:learn_hub/core/error/api_exception.dart';
 import 'package:learn_hub/core/network/api_endpoint.dart';
-import 'package:learn_hub/features/company/domain/entities/company.dart';
 import 'package:learn_hub/features/company/data/repositories/company_repository_impl.dart';
+import 'package:learn_hub/features/company/domain/entities/company.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../mock_api.dart';
@@ -45,95 +45,105 @@ void main() {
       verify(() => api.get(ApiEndpoint.companies)).called(1);
     });
 
-    test('fetchCompanies returns empty list when api returns empty list',
-        () async {
-      when(() => api.get(ApiEndpoint.companies)).thenAnswer((_) async => []);
+    test(
+      'fetchCompanies returns empty list when api returns empty list',
+      () async {
+        when(() => api.get(ApiEndpoint.companies)).thenAnswer((_) async => []);
 
-      final companies = await repository.fetchCompanies();
+        final companies = await repository.fetchCompanies();
 
-      expect(companies, isA<List<Company>>());
-      expect(companies, isEmpty);
-      verify(() => api.get(ApiEndpoint.companies)).called(1);
-    });
+        expect(companies, isA<List<Company>>());
+        expect(companies, isEmpty);
+        verify(() => api.get(ApiEndpoint.companies)).called(1);
+      },
+    );
 
     test('fetchCompanies throws when api.get throws', () async {
-      when(() => api.get(ApiEndpoint.companies)).thenThrow(Exception('network error'));
+      when(
+        () => api.get(ApiEndpoint.companies),
+      ).thenThrow(Exception('network error'));
 
-      expect(
-        () => repository.fetchCompanies(),
-        throwsA(isA<Exception>()),
-      );
+      expect(() => repository.fetchCompanies(), throwsA(isA<Exception>()));
       verify(() => api.get(ApiEndpoint.companies)).called(1);
     });
 
-    test('fetchCompanyById returns a single Company from api response',
-        () async {
-      final json = {
-        'id': 1,
-        'name': 'ABC Corporation',
-        'address': '123 Main St',
-        'zip': '12345',
-        'country': 'USA',
-        'employeeCount': 2,
-        'industry': 'Technology',
-        'marketCap': 1000000000,
-        'domain': 'abccorp.com',
-        'logo': 'https://example.com/logo1.png',
-        'ceoName': 'Maritza Feeney',
-      };
+    test(
+      'fetchCompanyById returns a single Company from api response',
+      () async {
+        final json = {
+          'id': 1,
+          'name': 'ABC Corporation',
+          'address': '123 Main St',
+          'zip': '12345',
+          'country': 'USA',
+          'employeeCount': 2,
+          'industry': 'Technology',
+          'marketCap': 1000000000,
+          'domain': 'abccorp.com',
+          'logo': 'https://example.com/logo1.png',
+          'ceoName': 'Maritza Feeney',
+        };
 
-      when(() => api.get(ApiEndpoint.companyById(1))).thenAnswer((_) async => json);
+        when(
+          () => api.get(ApiEndpoint.companyById(1)),
+        ).thenAnswer((_) async => json);
 
-      final company = await repository.fetchCompanyById(1);
+        final company = await repository.fetchCompanyById(1);
 
-      expect(company, isA<Company>());
-      expect(company.name, 'ABC Corporation');
-      expect(company.ceoName, 'Maritza Feeney');
-      verify(() => api.get(ApiEndpoint.companyById(1))).called(1);
-    });
+        expect(company, isA<Company>());
+        expect(company.name, 'ABC Corporation');
+        expect(company.ceoName, 'Maritza Feeney');
+        verify(() => api.get(ApiEndpoint.companyById(1))).called(1);
+      },
+    );
 
     test('fetchCompanyById throws when api.get throws', () async {
-      when(() => api.get(ApiEndpoint.companyById(1))).thenThrow(Exception('not found'));
+      when(
+        () => api.get(ApiEndpoint.companyById(1)),
+      ).thenThrow(Exception('not found'));
 
-      expect(
-        () => repository.fetchCompanyById(1),
-        throwsA(isA<Exception>()),
-      );
+      expect(() => repository.fetchCompanyById(1), throwsA(isA<Exception>()));
       verify(() => api.get(ApiEndpoint.companyById(1))).called(1);
     });
 
-    test('fetchCompanies throws ApiException when response is not a List',
-        () async {
-      when(() => api.get(ApiEndpoint.companies))
-          .thenAnswer((_) async => 'not a list');
+    test(
+      'fetchCompanies throws ApiException when response is not a List',
+      () async {
+        when(
+          () => api.get(ApiEndpoint.companies),
+        ).thenAnswer((_) async => 'not a list');
 
-      expect(
-        () => repository.fetchCompanies(),
-        throwsA(
-          isA<ApiException>().having(
-            (e) => e.message,
-            'message',
-            contains('Unexpected companies response structure'),
+        expect(
+          () => repository.fetchCompanies(),
+          throwsA(
+            isA<ApiException>().having(
+              (e) => e.message,
+              'message',
+              contains('Unexpected companies response structure'),
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
 
-    test('fetchCompanyById throws ApiException when response is not a Map',
-        () async {
-      when(() => api.get(ApiEndpoint.companyById(1)))
-          .thenAnswer((_) async => 'not a map');
+    test(
+      'fetchCompanyById throws ApiException when response is not a Map',
+      () async {
+        when(
+          () => api.get(ApiEndpoint.companyById(1)),
+        ).thenAnswer((_) async => 'not a map');
 
-      expect(
-        () => repository.fetchCompanyById(1),
-        throwsA(
-          isA<ApiException>().having(
-            (e) => e.message,
-            'message',
-            contains('Unexpected company response structure'),
+        expect(
+          () => repository.fetchCompanyById(1),
+          throwsA(
+            isA<ApiException>().having(
+              (e) => e.message,
+              'message',
+              contains('Unexpected company response structure'),
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   });
 }

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_hub/core/utils/app_color.dart';
+import 'package:learn_hub/features/user/domain/entities/user.dart';
+import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 import 'package:learn_hub/features/user/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:learn_hub/features/user/presentation/bloc/profile_bloc/profile_event.dart';
 import 'package:learn_hub/features/user/presentation/bloc/profile_bloc/profile_state.dart';
-import 'package:learn_hub/features/user/domain/entities/user.dart';
-import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
-import 'package:learn_hub/core/utils/app_color.dart';
-
 import 'package:learn_hub/shared/widgets/images/cached_image.dart';
 import 'package:learn_hub/shared/widgets/info_row.dart';
 import 'package:learn_hub/shared/widgets/tiles/skill_tile.dart';
@@ -142,9 +141,9 @@ class _UserDetailsBody extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
+            children: [
               _ProfileStat(title: 'COURSES', value: '24'),
               _ProfileStat(title: 'COMPLETED', value: '12'),
               _ProfileStat(title: 'RATING', value: '4.8'),
@@ -170,7 +169,7 @@ class _UserDetailsBody extends StatelessWidget {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: 12),
-          SkillWrapList(skills: UserDetailsScreen._skills),
+          const SkillWrapList(skills: UserDetailsScreen._skills),
           const SizedBox(height: 24),
           const Text(
             'Personal Information',

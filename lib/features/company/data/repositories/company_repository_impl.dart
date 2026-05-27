@@ -1,6 +1,6 @@
 import 'package:learn_hub/core/error/api_exception.dart';
-import 'package:learn_hub/core/network/api_endpoint.dart';
 import 'package:learn_hub/core/network/api_client.dart';
+import 'package:learn_hub/core/network/api_endpoint.dart';
 import 'package:learn_hub/features/company/domain/entities/company.dart';
 import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
 
@@ -14,8 +14,9 @@ class CompanyRepositoryImpl implements CompanyRepository {
     try {
       final response = await api.get(ApiEndpoint.companies);
 
-      final companies =
-          (response as List).map((e) => Company.fromJson(e)).toList();
+      final companies = (response as List)
+          .map((e) => Company.fromJson(e))
+          .toList();
 
       return companies;
     } on TypeError catch (e) {

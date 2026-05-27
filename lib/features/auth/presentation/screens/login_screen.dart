@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learn_hub/shared/widgets/alerts/alert.dart';
-import 'package:learn_hub/shared/widgets/buttons/bar_button.dart';
-import 'package:learn_hub/shared/widgets/text_fields/custom_text_field.dart';
-
+import 'package:learn_hub/core/di/injection.dart';
+import 'package:learn_hub/features/auth/domain/repositories/login_repository.dart';
 import 'package:learn_hub/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:learn_hub/features/auth/presentation/bloc/login_bloc/login_event.dart';
 import 'package:learn_hub/features/auth/presentation/bloc/login_bloc/login_state.dart';
-import 'package:learn_hub/core/di/injection.dart';
-import 'package:learn_hub/features/auth/domain/repositories/login_repository.dart';
 import 'package:learn_hub/features/home/presentation/screens/bottom_navigation_screen.dart';
+import 'package:learn_hub/shared/widgets/alerts/alert.dart';
+import 'package:learn_hub/shared/widgets/buttons/bar_button.dart';
+import 'package:learn_hub/shared/widgets/text_fields/custom_text_field.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String route = '/login';
@@ -26,7 +25,7 @@ class LoginScreen extends StatelessWidget {
             if (state.isSuccess) {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                  builder: (context) => BottomNavigationScreen(),
+                  builder: (context) => const BottomNavigationScreen(),
                 ),
               );
             }
@@ -57,7 +56,7 @@ class LoginScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 30.0),
                           child: Column(
                             children: [
-                              Text(
+                              const Text(
                                 'Sign In',
                                 style: TextStyle(
                                   fontSize: 30,
@@ -89,7 +88,9 @@ class LoginScreen extends StatelessWidget {
                         BarButton(
                           title: 'Sign In',
                           isLoading: state.isLoading,
-                          onTap: state.isLoading ? null : () => bloc.add(LoginSubmitted()),
+                          onTap: state.isLoading
+                              ? null
+                              : () => bloc.add(LoginSubmitted()),
                         ),
                       ],
                     ),

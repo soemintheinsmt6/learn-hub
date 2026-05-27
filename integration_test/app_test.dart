@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:learn_hub/main.dart' as app;
 import 'package:learn_hub/features/company/presentation/widgets/company_tile.dart';
-import 'package:learn_hub/features/user/presentation/widgets/user_tile.dart';
 import 'package:learn_hub/features/user/presentation/widgets/user_list_shimmer.dart';
+import 'package:learn_hub/features/user/presentation/widgets/user_tile.dart';
+import 'package:learn_hub/main.dart' as app;
 import 'package:shimmer/shimmer.dart';
 
 void main() {
@@ -177,32 +177,31 @@ void main() {
       expect(find.text('Welcome Developer'), findsOneWidget);
     });
 
-    testWidgets(
-      'Onboarding Continue button advances to next page each time',
-      (WidgetTester tester) async {
-        app.main();
-        await tester.pump();
-        await tester.pumpAndSettle(const Duration(seconds: 3));
+    testWidgets('Onboarding Continue button advances to next page each time', (
+      WidgetTester tester,
+    ) async {
+      app.main();
+      await tester.pump();
+      await tester.pumpAndSettle(const Duration(seconds: 3));
 
-        // Navigate page by page using the Continue button
-        for (int page = 0; page < 4; page++) {
-          final continueBtn = find.text('Continue');
-          if (continueBtn.evaluate().isNotEmpty) {
-            await tester.tap(continueBtn);
-            await tester.pumpAndSettle();
-          } else {
-            break; // Reached the last onboarding page
-          }
+      // Navigate page by page using the Continue button
+      for (int page = 0; page < 4; page++) {
+        final continueBtn = find.text('Continue');
+        if (continueBtn.evaluate().isNotEmpty) {
+          await tester.tap(continueBtn);
+          await tester.pumpAndSettle();
+        } else {
+          break; // Reached the last onboarding page
         }
+      }
 
-        // After all Continue taps we should see Sign In (last page) or login screen
-        expect(
-          find.text('Sign In').evaluate().isNotEmpty ||
-              find.text('Welcome Developer').evaluate().isNotEmpty,
-          isTrue,
-        );
-      },
-    );
+      // After all Continue taps we should see Sign In (last page) or login screen
+      expect(
+        find.text('Sign In').evaluate().isNotEmpty ||
+            find.text('Welcome Developer').evaluate().isNotEmpty,
+        isTrue,
+      );
+    });
 
     // ── Login Screen ──────────────────────────────
 
@@ -293,10 +292,11 @@ void main() {
         await tester.pumpAndSettle(const Duration(seconds: 5));
 
         // App should remain on login or navigate (API may handle validation)
-        final isOnLoginScreen =
-            find.text('Welcome Developer').evaluate().isNotEmpty;
-        final isOnHome =
-            find.byType(BottomNavigationBar).evaluate().isNotEmpty;
+        final isOnLoginScreen = find
+            .text('Welcome Developer')
+            .evaluate()
+            .isNotEmpty;
+        final isOnHome = find.byType(BottomNavigationBar).evaluate().isNotEmpty;
         expect(isOnLoginScreen || isOnHome, isTrue);
       },
     );
@@ -319,35 +319,36 @@ void main() {
       );
     });
 
-    testWidgets('Login failure with invalid credentials stays on login screen', (
-      WidgetTester tester,
-    ) async {
-      app.main();
-      await waitForLoginScreen(tester);
+    testWidgets(
+      'Login failure with invalid credentials stays on login screen',
+      (WidgetTester tester) async {
+        app.main();
+        await waitForLoginScreen(tester);
 
-      expect(find.text('Welcome Developer'), findsOneWidget);
-
-      final textFields = find.byType(TextField);
-      await tester.enterText(textFields.first, 'invaliduser');
-      await tester.pump();
-      await tester.enterText(textFields.last, 'wrongpassword');
-      await tester.pump();
-
-      await tester.tap(find.text('Sign In').last);
-      await tester.pumpAndSettle(const Duration(seconds: 10));
-
-      final signInText = find.text('Sign In');
-      final bottomNavBar = find.byType(BottomNavigationBar);
-
-      if (signInText.evaluate().isNotEmpty) {
         expect(find.text('Welcome Developer'), findsOneWidget);
-      } else if (bottomNavBar.evaluate().isNotEmpty) {
-        expect(bottomNavBar, findsOneWidget);
-      } else {
-        // Dialog or loading state — app is handling the attempt
-        expect(true, isTrue);
-      }
-    });
+
+        final textFields = find.byType(TextField);
+        await tester.enterText(textFields.first, 'invaliduser');
+        await tester.pump();
+        await tester.enterText(textFields.last, 'wrongpassword');
+        await tester.pump();
+
+        await tester.tap(find.text('Sign In').last);
+        await tester.pumpAndSettle(const Duration(seconds: 10));
+
+        final signInText = find.text('Sign In');
+        final bottomNavBar = find.byType(BottomNavigationBar);
+
+        if (signInText.evaluate().isNotEmpty) {
+          expect(find.text('Welcome Developer'), findsOneWidget);
+        } else if (bottomNavBar.evaluate().isNotEmpty) {
+          expect(bottomNavBar, findsOneWidget);
+        } else {
+          // Dialog or loading state — app is handling the attempt
+          expect(true, isTrue);
+        }
+      },
+    );
 
     testWidgets('Complete login flow → home screen visible', (
       WidgetTester tester,
@@ -368,8 +369,7 @@ void main() {
 
       final bottomNavBar = find.byType(BottomNavigationBar);
       if (bottomNavBar.evaluate().isNotEmpty) {
-        final bottomNav =
-            tester.widget<BottomNavigationBar>(bottomNavBar);
+        final bottomNav = tester.widget<BottomNavigationBar>(bottomNavBar);
         expect(bottomNav.items.length, 3);
         expect(find.text('Home'), findsOneWidget);
       }
@@ -385,8 +385,7 @@ void main() {
 
       final bottomNavBar = find.byType(BottomNavigationBar);
       if (bottomNavBar.evaluate().isNotEmpty) {
-        final bottomNav =
-            tester.widget<BottomNavigationBar>(bottomNavBar);
+        final bottomNav = tester.widget<BottomNavigationBar>(bottomNavBar);
         expect(bottomNav.items.length, 3);
         expect(find.byIcon(Icons.home), findsOneWidget);
         expect(find.byIcon(Icons.person), findsOneWidget);
@@ -782,8 +781,7 @@ void main() {
           await tester.tap(companyTileFinder.first);
           await tester.pumpAndSettle(const Duration(seconds: 3));
 
-          final NavigatorState navigator =
-              tester.state(find.byType(Navigator));
+          final NavigatorState navigator = tester.state(find.byType(Navigator));
           navigator.pop();
           await tester.pumpAndSettle();
 

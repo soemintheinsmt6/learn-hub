@@ -5,4 +5,3 @@ class LoadCompanyDetails extends CompanyDetailsEvent {
 
   LoadCompanyDetails(this.id);
 }
-

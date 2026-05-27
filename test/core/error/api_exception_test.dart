@@ -36,5 +36,18 @@ void main() {
         return;
       }
     });
+
+    test('statusCode is null by default', () {
+      final exception = ApiException('transport error');
+
+      expect(exception.statusCode, isNull);
+    });
+
+    test('stores statusCode when provided', () {
+      final exception = ApiException('Unauthorized', statusCode: 401);
+
+      expect(exception.statusCode, 401);
+      expect(exception.message, 'Unauthorized');
+    });
   });
 }

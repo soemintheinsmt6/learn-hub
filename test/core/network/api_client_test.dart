@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:learn_hub/core/error/api_exception.dart';
 import 'package:learn_hub/core/network/api_client.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
 
@@ -27,10 +27,7 @@ void main() {
 
     group('handleResponse', () {
       test('returns decoded data for 200 status', () {
-        final response = http.Response(
-          jsonEncode({'key': 'value'}),
-          200,
-        );
+        final response = http.Response(jsonEncode({'key': 'value'}), 200);
 
         final result = apiClient.handleResponse(response, 'test');
 
@@ -38,10 +35,7 @@ void main() {
       });
 
       test('returns decoded data for 201 status', () {
-        final response = http.Response(
-          jsonEncode({'created': true}),
-          201,
-        );
+        final response = http.Response(jsonEncode({'created': true}), 201);
 
         final result = apiClient.handleResponse(response, 'test');
 
@@ -72,8 +66,11 @@ void main() {
         expect(
           () => apiClient.handleResponse(response, 'test'),
           throwsA(
-            isA<ApiException>()
-                .having((e) => e.message, 'message', 'Bad request'),
+            isA<ApiException>().having(
+              (e) => e.message,
+              'message',
+              'Bad request',
+            ),
           ),
         );
       });
@@ -91,10 +88,7 @@ void main() {
       });
 
       test('throws ApiException for 500 status with fallback message', () {
-        final response = http.Response(
-          jsonEncode({}),
-          500,
-        );
+        final response = http.Response(jsonEncode({}), 500);
 
         expect(
           () => apiClient.handleResponse(response, 'users'),
@@ -117,8 +111,25 @@ void main() {
         expect(
           () => apiClient.handleResponse(response, 'users/99'),
           throwsA(
-            isA<ApiException>()
-                .having((e) => e.message, 'message', 'Not found'),
+            isA<ApiException>().having(
+              (e) => e.message,
+              'message',
+              'Not found',
+            ),
+          ),
+        );
+      });
+
+      test('captures the response status code on error', () {
+        final response = http.Response(
+          jsonEncode({'message': 'Unauthorized'}),
+          401,
+        );
+
+        expect(
+          () => apiClient.handleResponse(response, 'auth'),
+          throwsA(
+            isA<ApiException>().having((e) => e.statusCode, 'statusCode', 401),
           ),
         );
       });
@@ -143,8 +154,9 @@ void main() {
       });
 
       test('includes Authorization when token is available', () async {
-        when(() => mockStorage.read(key: 'token'))
-            .thenAnswer((_) async => 'my-token');
+        when(
+          () => mockStorage.read(key: 'token'),
+        ).thenAnswer((_) async => 'my-token');
 
         final headers = await apiClient.getHeaders(true);
 
@@ -153,8 +165,9 @@ void main() {
       });
 
       test('omits Authorization when token is null', () async {
-        when(() => mockStorage.read(key: 'token'))
-            .thenAnswer((_) async => null);
+        when(
+          () => mockStorage.read(key: 'token'),
+        ).thenAnswer((_) async => null);
 
         final headers = await apiClient.getHeaders(true);
 

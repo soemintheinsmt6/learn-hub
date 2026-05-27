@@ -9,8 +9,8 @@ class LoginState extends Equatable {
   final Map<String, dynamic>? data;
 
   const LoginState({
-    this.phoneNumber = "",
-    this.password = "",
+    this.phoneNumber = '',
+    this.password = '',
     this.isLoading = false,
     this.isSuccess = false,
     this.error,

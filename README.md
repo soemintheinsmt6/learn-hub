@@ -1,5 +1,11 @@
 # learn_hub
 
+[![Test](https://github.com/soemintheinsmt6/learn-hub/actions/workflows/test.yml/badge.svg)](https://github.com/soemintheinsmt6/learn-hub/actions/workflows/test.yml)
+[![Android Build](https://github.com/soemintheinsmt6/learn-hub/actions/workflows/build_android.yml/badge.svg)](https://github.com/soemintheinsmt6/learn-hub/actions/workflows/build_android.yml)
+[![iOS Build](https://github.com/soemintheinsmt6/learn-hub/actions/workflows/build_ios.yml/badge.svg)](https://github.com/soemintheinsmt6/learn-hub/actions/workflows/build_ios.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Flutter](https://img.shields.io/badge/Flutter-stable-02569B?logo=flutter)](https://flutter.dev)
+
 LearnHub is a Flutter application showcasing a compact but complete architecture stack:
 
 - Onboarding flow with multiple pages

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:learn_hub/features/onboarding/presentation/screens/on_boarding_screen.dart';
 import 'package:learn_hub/core/utils/app_color.dart';
+import 'package:learn_hub/features/onboarding/presentation/screens/on_boarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: animation,
-              child: OnBoardingScreen(),
+              child: const OnBoardingScreen(),
             );
           },
         ),

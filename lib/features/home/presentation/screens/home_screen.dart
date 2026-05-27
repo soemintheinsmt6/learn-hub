@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_hub/core/utils/app_color.dart';
+import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 import 'package:learn_hub/features/user/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:learn_hub/features/user/presentation/bloc/profile_bloc/profile_event.dart';
 import 'package:learn_hub/features/user/presentation/bloc/profile_bloc/profile_state.dart';
-import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
-import 'package:learn_hub/core/utils/app_color.dart';
 import 'package:learn_hub/shared/widgets/profile_card.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
           child: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
               if (state.isLoading) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(color: AppColors.primary),
                 );
               }
@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
               }
 
               return Scaffold(
-                appBar: AppBar(title: const Text("Home")),
+                appBar: AppBar(title: const Text('Home')),
                 body: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

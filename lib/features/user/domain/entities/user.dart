@@ -28,31 +28,31 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    name: json["name"],
-    company: json["company"],
-    username: json["username"],
-    email: json["email"],
-    address: json["address"],
-    zip: json["zip"],
-    state: json["state"],
-    country: json["country"],
-    phone: json["phone"],
-    photo: json["photo"],
+    id: json['id'],
+    name: json['name'],
+    company: json['company'],
+    username: json['username'],
+    email: json['email'],
+    address: json['address'],
+    zip: json['zip'],
+    state: json['state'],
+    country: json['country'],
+    phone: json['phone'],
+    photo: json['photo'],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "company": company,
-    "username": username,
-    "email": email,
-    "address": address,
-    "zip": zip,
-    "state": state,
-    "country": country,
-    "phone": phone,
-    "photo": photo,
+    'id': id,
+    'name': name,
+    'company': company,
+    'username': username,
+    'email': email,
+    'address': address,
+    'zip': zip,
+    'state': state,
+    'country': country,
+    'phone': phone,
+    'photo': photo,
   };
 
   static User placeHolder = User(

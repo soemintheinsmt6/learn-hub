@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:learn_hub/core/utils/app_color.dart';
 
 class BarButton extends StatelessWidget {
-  const BarButton({super.key, required this.title, this.onTap, this.isLoading = false});
+  const BarButton({
+    super.key,
+    required this.title,
+    this.onTap,
+    this.isLoading = false,
+  });
 
   final Function()? onTap;
   final String title;
@@ -31,7 +36,10 @@ class BarButton extends StatelessWidget {
               )
             : Text(
                 title,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
       ),
     );

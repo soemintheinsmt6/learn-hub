@@ -12,7 +12,9 @@ class CustomProgressIndicator extends StatelessWidget {
       filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
       child: Container(
         color: Colors.black.withValues(alpha: 0.5),
-        child: Center(child: SpinKitSpinningLines(color: AppColors.primary)),
+        child: const Center(
+          child: SpinKitSpinningLines(color: AppColors.primary),
+        ),
       ),
     );
   }

@@ -11,8 +11,8 @@ class ApiClient {
   final baseUrl = '${AppConfig.baseUrl}/';
 
   final head = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
   };
 
   @visibleForTesting
@@ -24,14 +24,14 @@ class ApiClient {
 
     final token = await storage.read(key: 'token');
 
-    return {...head, if (token != null) "Authorization": "Bearer $token"};
+    return {...head, if (token != null) 'Authorization': 'Bearer $token'};
   }
 
   Future<dynamic> get(String endpoint, {bool isRequiredToken = true}) async {
     try {
       final headers = await getHeaders(isRequiredToken);
       final response = await http.get(
-        Uri.parse("$baseUrl$endpoint"),
+        Uri.parse('$baseUrl$endpoint'),
         headers: headers,
       );
 
@@ -47,21 +47,6 @@ class ApiClient {
     }
   }
 
-  // For external APIs
-  Future<Map<String, dynamic>> getExternal(String fullUrl) async {
-    try {
-      final response = await http.get(Uri.parse(fullUrl), headers: head);
-
-      return jsonDecode(response.body);
-    } on SocketException {
-      throw ApiException('No internet connection');
-    } on HttpException {
-      throw ApiException('Failed to reach server');
-    } on FormatException {
-      throw ApiException('Invalid response format from $fullUrl');
-    }
-  }
-
   Future<Map<String, dynamic>> post(
     String endpoint, {
     required Map<String, dynamic> body,
@@ -70,7 +55,7 @@ class ApiClient {
     try {
       final headers = await getHeaders(isRequiredToken);
       final response = await http.post(
-        Uri.parse("$baseUrl$endpoint"),
+        Uri.parse('$baseUrl$endpoint'),
         headers: headers,
         body: jsonEncode(body),
       );
@@ -93,7 +78,7 @@ class ApiClient {
     try {
       final headers = await getHeaders(isRequiredToken);
       final response = await http.delete(
-        Uri.parse("$baseUrl$endpoint"),
+        Uri.parse('$baseUrl$endpoint'),
         headers: headers,
       );
       return handleResponse(response, endpoint);
@@ -116,8 +101,9 @@ class ApiClient {
       return data;
     } else {
       throw ApiException(
-        data["message"] ??
-            "Failed to request $endPoint: status code: ${response.statusCode}",
+        data['message'] ??
+            'Failed to request $endPoint: status code: ${response.statusCode}',
+        statusCode: response.statusCode,
       );
     }
   }

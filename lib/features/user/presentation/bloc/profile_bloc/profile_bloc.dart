@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 import 'package:learn_hub/features/user/presentation/bloc/profile_bloc/profile_event.dart';
 import 'package:learn_hub/features/user/presentation/bloc/profile_bloc/profile_state.dart';
-import 'package:learn_hub/features/user/domain/repositories/user_repository.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UserRepository repository;
@@ -25,4 +25,3 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 }
-

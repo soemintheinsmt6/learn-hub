@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learn_hub/shared/widgets/buttons/bar_button.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:learn_hub/core/utils/app_color.dart';
+import 'package:learn_hub/features/auth/presentation/screens/login_screen.dart';
+import 'package:learn_hub/features/onboarding/domain/entities/on_board.dart';
 import 'package:learn_hub/features/onboarding/presentation/bloc/onboarding_bloc/onboard_bloc.dart';
 import 'package:learn_hub/features/onboarding/presentation/bloc/onboarding_bloc/onboard_event.dart';
 import 'package:learn_hub/features/onboarding/presentation/bloc/onboarding_bloc/onboard_state.dart';
-import 'package:learn_hub/features/auth/presentation/screens/login_screen.dart';
-import 'package:learn_hub/features/onboarding/domain/entities/on_board.dart';
-import 'package:learn_hub/core/utils/app_color.dart';
-
 import 'package:learn_hub/features/onboarding/presentation/widgets/on_board_tile.dart';
+import 'package:learn_hub/shared/widgets/buttons/bar_button.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});

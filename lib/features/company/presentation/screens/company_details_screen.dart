@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:learn_hub/features/company/presentation/bloc/company_details_bloc/company_details_bloc.dart';
+import 'package:learn_hub/core/utils/app_color.dart';
+import 'package:learn_hub/core/utils/company_data_formatter.dart';
 import 'package:learn_hub/features/company/domain/entities/company.dart';
 import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
-import 'package:learn_hub/core/utils/app_color.dart';
-import 'package:learn_hub/shared/widgets/images/cached_image.dart';
-
+import 'package:learn_hub/features/company/presentation/bloc/company_details_bloc/company_details_bloc.dart';
 import 'package:learn_hub/features/company/presentation/bloc/company_details_bloc/company_details_event.dart';
 import 'package:learn_hub/features/company/presentation/bloc/company_details_bloc/company_details_state.dart';
-import 'package:learn_hub/core/utils/company_data_formatter.dart';
+import 'package:learn_hub/shared/widgets/images/cached_image.dart';
 import 'package:learn_hub/shared/widgets/info_row.dart';
 import 'package:learn_hub/shared/widgets/metric_card.dart';
 
@@ -99,7 +98,7 @@ class _CompanyDetailsBody extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   child: company.logo.isNotEmpty
                       ? CachedImage(url: company.logo)
-                      : Icon(
+                      : const Icon(
                           Icons.apartment,
                           size: 40,
                           color: AppColors.secondaryBackground,

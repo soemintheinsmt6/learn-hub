@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
 import 'package:learn_hub/features/company/presentation/bloc/company_bloc/company_event.dart';
 import 'package:learn_hub/features/company/presentation/bloc/company_bloc/company_state.dart';
-import 'package:learn_hub/features/company/domain/repositories/company_repository.dart';
 
 class CompanyBloc extends Bloc<CompanyEvent, CompanyState> {
   final CompanyRepository repository;

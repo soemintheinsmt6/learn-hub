@@ -6,17 +6,9 @@ class ProfileState extends Equatable {
   final User? user;
   final String? error;
 
-  const ProfileState({
-    this.isLoading = false,
-    this.user,
-    this.error,
-  });
+  const ProfileState({this.isLoading = false, this.user, this.error});
 
-  ProfileState copyWith({
-    bool? isLoading,
-    User? user,
-    String? error,
-  }) {
+  ProfileState copyWith({bool? isLoading, User? user, String? error}) {
     return ProfileState(
       isLoading: isLoading ?? this.isLoading,
       user: user ?? this.user,
@@ -27,4 +19,3 @@ class ProfileState extends Equatable {
   @override
   List<Object?> get props => [isLoading, user, error];
 }
-

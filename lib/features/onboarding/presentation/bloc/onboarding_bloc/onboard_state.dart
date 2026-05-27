@@ -4,10 +4,7 @@ class OnBoardState extends Equatable {
   final int currentIndex;
   final int length;
 
-  const OnBoardState({
-    this.currentIndex = 0,
-    required this.length,
-  });
+  const OnBoardState({this.currentIndex = 0, required this.length});
 
   bool get isLast => currentIndex == length - 1;
 
@@ -21,4 +18,3 @@ class OnBoardState extends Equatable {
   @override
   List<Object?> get props => [currentIndex, length];
 }
-
