@@ -475,10 +475,10 @@ packages:
     dependency: "direct main"
     description:
       name: native_dialog_plus
-      sha256: "83173283b188aa4f1c73e496196696161486e56abd6d0f34bb963f565f750af7"
+      sha256: "2aaef2b43a26189903ff16eafcdf483f67e877863ff656824dd83d2d0b8a981e"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.1.2"
   nested:
     dependency: transitive
     description:
