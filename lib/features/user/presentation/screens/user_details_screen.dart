@@ -53,11 +53,10 @@ class UserDetailsScreen extends StatelessWidget {
         body: SafeArea(
           child: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
-              if (state.error != null && state.user == null) {
-                return Center(child: Text('Error: ${state.error}'));
-              }
-
-              final user = state.user ?? User.placeHolder;
+              // Prefer the freshly fetched profile, but fall back to the user
+              // passed in from the list so a failed (or pending) fetch still
+              // renders a usable screen instead of a bare error.
+              final user = state.user ?? this.user;
 
               return _UserDetailsBody(user: user);
             },

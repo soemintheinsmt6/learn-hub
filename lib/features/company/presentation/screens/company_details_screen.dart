@@ -42,11 +42,10 @@ class CompanyDetailsScreen extends StatelessWidget {
         body: SafeArea(
           child: BlocBuilder<CompanyDetailsBloc, CompanyDetailsState>(
             builder: (context, state) {
-              if (state.error != null && state.company == null) {
-                return Center(child: Text('Error: ${state.error}'));
-              }
-
-              final company = state.company ?? Company.placeHolder;
+              // Prefer freshly fetched details, but fall back to the company
+              // passed in from the list so a failed (or pending) detail fetch
+              // still renders a usable screen instead of a bare error.
+              final company = state.company ?? this.company;
 
               return _CompanyDetailsBody(company: company);
             },

@@ -10,6 +10,10 @@ import 'package:learn_hub/features/user/domain/repositories/user_repository.dart
 final getIt = GetIt.instance;
 
 void setupDependencies() {
+  // Idempotent: safe to call more than once (e.g. integration tests that
+  // restart the app via main() between cases). Skip if already wired up.
+  if (getIt.isRegistered<ApiClient>()) return;
+
   // Services
   getIt.registerLazySingleton<ApiClient>(() => ApiClient());
 
